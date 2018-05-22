@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     private Animator anim;
     private Rigidbody2D body;
     public bool isAttacking;
+    public bool isMelee;
     public float attackTime;
     private float attackTimer;
 
@@ -17,11 +18,22 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+        isMelee = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         isMoving = false;
+        if (isMelee)
+        {
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        }
         if (!isAttacking)
         {
             if (Input.GetAxisRaw("Horizontal") > 0.5 || Input.GetAxisRaw("Horizontal") < -0.5)
@@ -47,13 +59,26 @@ public class PlayerController : MonoBehaviour {
             }
         }
         
-
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(1))
+        {
+            if(isMelee)
+            {
+                isMelee = false;
+            }
+            else
+            {
+                isMelee = true;
+            }
+        }
+        if(Input.GetMouseButtonDown(0) && attackTimer<=0)
         {
             attackTimer = attackTime;
             isAttacking = true;
             body.velocity = Vector2.zero;
-            anim.SetBool("isAttacking", isAttacking);
+            if(isMelee)
+            {
+                anim.SetBool("isAttacking", isAttacking);
+            }
         }
         if(attackTimer > 0)
         {
@@ -62,7 +87,10 @@ public class PlayerController : MonoBehaviour {
         else
         {
             isAttacking = false;
-            anim.SetBool("isAttacking", isAttacking);
+            if (isMelee)
+            {
+                anim.SetBool("isAttacking", isAttacking);
+            }
         }
 
         anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
