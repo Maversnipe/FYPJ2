@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour {
 
+    public int attackDmg;
 	// Use this for initialization
 	void Start () {
 		
@@ -16,9 +17,9 @@ public class EnemyDamage : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && GameObject.Find("Player").GetComponent<PlayerController>().isAttacking)
         {
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<AI>().MinusHP(attackDmg);
         }
     }
 }
