@@ -18,8 +18,8 @@ public class Item {
 	// Item Types
 	public enum ItemType {
 		None,
-		WeaponRune,
-		ArmourRune,
+		Weapon_Rune,
+		Armour_Rune,
 		Consumables,
         Arrow,
 		Quest,

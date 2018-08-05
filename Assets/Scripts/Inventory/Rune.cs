@@ -35,17 +35,17 @@ public class Rune : Item
     public void RandomiseRune()
     {
         // Set rune ability
-        m_runeAbility = Random.Range(PlayerManager.Instance.currentLevel * m_multiplier - 10, PlayerManager.Instance.currentLevel * m_multiplier + 10);
+        m_runeAbility = Random.Range(PlayerManager.Instance.m_currentLevel * m_multiplier - 10, PlayerManager.Instance.m_currentLevel * m_multiplier + 10);
         if(m_runeAbility <= 0)
-            m_runeAbility = Random.Range(1, PlayerManager.Instance.currentLevel * m_multiplier + 10);
+            m_runeAbility = Random.Range(1, PlayerManager.Instance.m_currentLevel * m_multiplier + 10);
         string runeab = "Rune Ability is " + m_runeAbility.ToString();
         Debug.Log(runeab);
         // Check what rune type this is
-        if(m_itemType == ItemType.ArmourRune)
+        if(m_itemType == ItemType.Armour_Rune)
         {
             m_itemDesc = "+" + m_runeAbility.ToString() + " Health";
         }
-        else if(m_itemType == ItemType.WeaponRune)
+        else if(m_itemType == ItemType.Weapon_Rune)
         {
             m_itemDesc = "+" + m_runeAbility.ToString() + " Damage";
         }

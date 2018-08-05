@@ -40,16 +40,6 @@ public class Slot : MonoBehaviour {
         m_containsPoint = false;
     }
 
-    void OnMouseEnter()
-    {
-        Debug.Log("I'm in");
-    }
-
-    void OnMouseExit()
-    {
-        Debug.Log("I'm out");
-    }
-
     void Update()
     {
         if (m_containsPoint)
@@ -102,6 +92,29 @@ public class Slot : MonoBehaviour {
                 PlayerMenu.Instance.SetHasTarget(true);
                 // Remove item from slot
                 RemoveItem(m_item.Count);
+
+                // Check if the slot is a rune slot
+                if (m_slotType == SlotType.Armour_Rune ||
+                    m_slotType == SlotType.Weapon_Rune)
+                {
+                    // Set bonuses for rune
+                    if (this.m_slotID == RuneMenu.Instance.m_SwordSlot_1.m_slotID
+                        || this.m_slotID == RuneMenu.Instance.m_SwordSlot_2.m_slotID)
+                    {   // Sword Rune
+                        PlayerManager.Instance.SetBonuses(0);
+                    }
+                    else if (this.m_slotID == RuneMenu.Instance.m_BowSlot_1.m_slotID
+                        || this.m_slotID == RuneMenu.Instance.m_BowSlot_2.m_slotID)
+                    {   // Bow Rune
+                        PlayerManager.Instance.SetBonuses(1);
+                    }
+                    else if (this.m_slotID == RuneMenu.Instance.m_ArmourSlot_1.m_slotID
+                        || this.m_slotID == RuneMenu.Instance.m_ArmourSlot_2.m_slotID)
+                    {   // Armour Rune
+                        Debug.Log("I AM THE KING OF THE WORLD");
+                        PlayerManager.Instance.SetBonuses(2);
+                    }
+                }
             }
        
         }
@@ -112,10 +125,12 @@ public class Slot : MonoBehaviour {
             {
                 bool canPlace = true;
 
+                // Check if the correct item is put in the correct slot
+                // Example: Weapon Rune in Weapon Rune Slot
                 if ((m_slotType == SlotType.Armour_Rune &&
-                    PlayerMenu.Instance.m_targetItem.Peek().m_itemType != Item.ItemType.ArmourRune) ||
+                    PlayerMenu.Instance.m_targetItem.Peek().m_itemType != Item.ItemType.Armour_Rune) ||
                     (m_slotType == SlotType.Weapon_Rune &&
-                    PlayerMenu.Instance.m_targetItem.Peek().m_itemType != Item.ItemType.WeaponRune))
+                    PlayerMenu.Instance.m_targetItem.Peek().m_itemType != Item.ItemType.Weapon_Rune))
                     canPlace = false;
 
                 if (canPlace)
@@ -134,6 +149,29 @@ public class Slot : MonoBehaviour {
                     PlayerMenu.Instance.m_targetImage.gameObject.SetActive(false);
                     // Set has target to false
                     PlayerMenu.Instance.SetHasTarget(false);
+
+                    // Check if the slot is a rune slot
+                    if(m_slotType == SlotType.Armour_Rune ||
+                        m_slotType == SlotType.Weapon_Rune)
+                    {
+                        // Set bonuses for rune
+                        if(this.m_slotID == RuneMenu.Instance.m_SwordSlot_1.m_slotID 
+                            || this.m_slotID == RuneMenu.Instance.m_SwordSlot_2.m_slotID)
+                        {   // Sword Rune
+                            PlayerManager.Instance.SetBonuses(0);
+                        }
+                        else if (this.m_slotID == RuneMenu.Instance.m_BowSlot_1.m_slotID
+                            || this.m_slotID == RuneMenu.Instance.m_BowSlot_2.m_slotID)
+                        {   // Bow Rune
+                            PlayerManager.Instance.SetBonuses(1);
+                        }
+                        else if (this.m_slotID == RuneMenu.Instance.m_ArmourSlot_1.m_slotID
+                            || this.m_slotID == RuneMenu.Instance.m_ArmourSlot_2.m_slotID)
+                        {   // Armour Rune
+                            Debug.Log("I AM THE KING OF THE WORLD");
+                            PlayerManager.Instance.SetBonuses(2);
+                        }
+                    }
                 }
                 else
                 {

@@ -73,8 +73,6 @@ public class PlayerController : MonoBehaviour {
                 body.velocity = new Vector2(body.velocity.x, 0f);
             }
         }
-        
-
 
 		if(Input.GetMouseButtonDown(1) && !inventoryIsActive)
         {

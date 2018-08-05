@@ -36,7 +36,14 @@ public class RuneMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Set each slot from save game
 
+        // Set the bonuses for sword
+        PlayerManager.Instance.SetBonuses(0);
+        // Set the bonuses for bow
+        PlayerManager.Instance.SetBonuses(1);
+        // Set the bonuses for armour
+        PlayerManager.Instance.SetBonuses(2);
     }
 
     // Update is called once per frame
