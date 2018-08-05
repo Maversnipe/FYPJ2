@@ -9,7 +9,8 @@ public class ItemDatabase : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
-		m_itemsList.Add (new Item ("Sword", 0, "A Sword!", 4, Item.ItemType.Weapon));
-		m_itemsList.Add (new Item ("Armour", 1, "An Armour!", 4, Item.ItemType.Armour));
+		m_itemsList.Add (new Rune ("Weapon Rune", 0, Item.ItemType.WeaponRune));
+		m_itemsList.Add (new Rune ("Armour Rune", 1, Item.ItemType.ArmourRune));
+		m_itemsList.Add (new Item ("Arrow", 2, "An Arrow!", Item.ItemType.Arrow, true));
 	}
 }

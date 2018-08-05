@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public Inventory inventory;
     public float moveSpeed;
     private bool isMoving;
     private Vector2 dir;
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     public bool isMelee;
     public float attackTime;
     private float attackTimer;
+	private int count = 1;
+
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +26,18 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
+        // Check if player presses Inventory button
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            // Set player menu active to the opposite of itself
+            PlayerMenu.Instance.SetMenuActive(!PlayerMenu.Instance.MenuIsActive());
+            // Set the menu object to active
+            GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
+        }
+
+        bool inventoryIsActive = PlayerMenu.Instance.MenuIsActive();
+		
         isMoving = false;
         if (isMelee)
         {
@@ -59,7 +74,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
         
-        if(Input.GetMouseButtonDown(1))
+
+
+		if(Input.GetMouseButtonDown(1) && !inventoryIsActive)
         {
             if(isMelee)
             {
@@ -70,15 +87,32 @@ public class PlayerController : MonoBehaviour {
                 isMelee = true;
             }
         }
-        if(Input.GetMouseButtonDown(0) && attackTimer<=0)
+		if(Input.GetMouseButtonDown(0) && attackTimer<=0 && !inventoryIsActive)
         {
-            attackTimer = attackTime;
-            isAttacking = true;
-            body.velocity = Vector2.zero;
-            if(isMelee)
-            {
-                anim.SetBool("isAttacking", isAttacking);
-            }
+			if(!isMelee && count > 0)
+			{            
+				attackTimer = attackTime;
+				isAttacking = true;
+				body.velocity = Vector2.zero;
+				if(isMelee)
+				{
+					anim.SetBool("isAttacking", isAttacking);
+				}
+				count--;
+				//GameObject.Find ("Inventory").GetComponent<Inventory> ().RemoveItem (2);
+			}
+			if(isMelee)
+			{
+				attackTimer = attackTime;
+				isAttacking = true;
+				body.velocity = Vector2.zero;
+				if(isMelee)
+				{
+					anim.SetBool("isAttacking", isAttacking);
+				}
+			}
+
+
         }
         if(attackTimer > 0)
         {

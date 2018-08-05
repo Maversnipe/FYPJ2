@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-[System.Serializable]
 public class Item {
 	// Item Name
 	public string m_itemName;
@@ -11,28 +9,41 @@ public class Item {
 	// Item Description
 	public string m_itemDesc;
 	// Item Icon
-	public Texture2D m_itemIcon;
-	// Item Power
-	public int m_itemPower;
+	public Sprite m_itemIcon;
 	// Item Type
 	public ItemType m_itemType;
+    // Check if Item is stackable
+    public bool m_stackable;
 
 	// Item Types
 	public enum ItemType {
 		None,
-		Weapon,
-		Armour,
+		WeaponRune,
+		ArmourRune,
 		Consumables,
+        Arrow,
 		Quest,
 	}
 
 	// Constructor
 	public Item()
 	{
-	}
+        // Set Item name
+        m_itemName = "";
+        // Set Item ID
+        m_itemID = -1;
+        // Set Item Description
+        m_itemDesc = "";
+        // Set Item Type
+        m_itemType = ItemType.None;
+        // Set Item Icon
+        m_itemIcon = null;
+        // Set Item Stackable
+        m_stackable = false;
+    }
 
 	// Overloaded Constructor
-	public Item(string _name, int _id, string _desc, int _power, ItemType _type)
+	public Item(string _name, int _id, string _desc, ItemType _type, bool _stackable)
 	{
 		// Set Item name
 		m_itemName = _name;
@@ -40,11 +51,11 @@ public class Item {
 		m_itemID = _id;
 		// Set Item Description
 		m_itemDesc = _desc;
-		// Set Item Power
-		m_itemPower = _power;
 		// Set Item Type
 		m_itemType = _type;
 		// Set Item Icon
-		m_itemIcon = Resources.Load<Texture2D>("Item Icon/" + _name);
+		m_itemIcon = Resources.Load<Sprite>("Item Icon/" + _name);
+        // Set Item Stackable
+        m_stackable = _stackable;
 	}
 }
