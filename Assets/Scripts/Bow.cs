@@ -20,10 +20,13 @@ public class Bow : MonoBehaviour {
 
         float rotAngle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotAngle + rotationOffset);
-        if(GameObject.Find("Player").GetComponent<PlayerController>().isAttacking && !GameObject.Find("Player").GetComponent<PlayerController>().isMelee)
+        if (GameObject.Find("Player"))
         {
-            GameObject.Find("Player").GetComponent<PlayerController>().isAttacking = false;
-            Instantiate(arrowPrefab, transform.position, transform.rotation);
+            if (GameObject.Find("Player").GetComponent<PlayerController>().isAttacking && !GameObject.Find("Player").GetComponent<PlayerController>().isMelee)
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().isAttacking = false;
+                Instantiate(arrowPrefab, transform.position, transform.rotation);
+            }
         }
     }
 }

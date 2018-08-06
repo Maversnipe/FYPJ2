@@ -16,6 +16,11 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameObject.Find("Player(Clone)"))
+        {
+
+            Target = GameObject.Find("Player(Clone)");
+        }
         targetPos = new Vector3(Target.transform.position.x, Target.transform.position.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
 	}

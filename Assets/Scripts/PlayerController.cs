@@ -15,14 +15,20 @@ public class PlayerController : MonoBehaviour {
     public float attackTime;
     private float attackTimer;
 	private int count = 1;
+    public class DoubleTap
+    {
+        public KeyCode key;
+        public float time;
+    }
 
-
+    public List<DoubleTap> doubleTap = new List<DoubleTap>();
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         isMelee = false;
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -124,7 +130,6 @@ public class PlayerController : MonoBehaviour {
                 anim.SetBool("isAttacking", isAttacking);
             }
         }
-
         anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
         anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
         anim.SetFloat("LastMoveX", dir.x);
