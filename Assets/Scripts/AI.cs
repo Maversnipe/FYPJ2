@@ -6,29 +6,72 @@ public class AI : MonoBehaviour {
 
     public float moveSpeed;
     private Rigidbody2D body;
+    public Vector2 target;
+    public Vector2 dir;
+    public float shortestDist;
     public float cooldownTime;
     private float cooldownTimer;
     public int AttackDmg;
     public int currentHP;
     public int maxHP;
+    public bool knockback;
+    public float knockbackTime;
+    public float knockbackDist;
+    public bool stun;
+    public float stunTimer;
 
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody2D>();
         currentHP = maxHP;
-	}
+        shortestDist = 100000;
+        target.Set(transform.position.x, transform.position.y);
+        knockback = false;
+        stun = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		if(GameObject.Find("Player"))
+        shortestDist = 100000;
+        dir.Set(0, 0);
+        if(!knockback && !stun)
         {
-            if (Vector3.Distance(GameObject.Find("Player").transform.position, transform.position) < 5 && Vector3.Distance(GameObject.Find("Player").transform.position, transform.position) > 0)
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
             {
-                body.velocity = new Vector2((GameObject.Find("Player").transform.position - transform.position).x, (GameObject.Find("Player").transform.position - transform.position).y);
-                body.velocity.Normalize();
+                float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
+                if (dist < 5 && dist > 0 && dist < shortestDist)
+                {
+                    shortestDist = dist;
+                    target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y);
+                }
             }
+            dir.Set(target.x - transform.position.x, target.y - transform.position.y);
+            body.velocity = dir.normalized;
         }
-        if(cooldownTimer > 0)
+        else if(knockback)
+        {
+            dir.Set(transform.position.x - target.x, transform.position.y - target.y);
+            body.velocity = dir.normalized * knockbackDist;
+            knockbackTime--;
+        }
+        else if(stun)
+        {
+            body.velocity.Set(0, 0);
+            stunTimer -= Time.deltaTime;
+        }
+        if(knockbackTime <= 0 && knockback)
+        {
+            knockback = false;
+            stun = true;
+            stunTimer = 0.5;
+        }
+        if(stunTimer <= 0)
+        {
+            stun = false;
+        }
+        
+
+        if (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
         }

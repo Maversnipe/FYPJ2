@@ -17,7 +17,7 @@ public class EnemyDamage : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy" && GameObject.Find("Player").GetComponent<PlayerController>().isAttacking)
+        if (other.gameObject.tag == "Enemy" && transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking)
         {
             other.gameObject.GetComponent<AI>().MinusHP(attackDmg);
         }

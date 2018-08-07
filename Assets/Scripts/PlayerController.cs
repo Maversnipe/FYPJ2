@@ -77,6 +77,23 @@ public class PlayerController : MonoBehaviour {
             // Set the menu object to active
             GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            for(int i = 0; i< GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+            {
+                float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
+                if (dist < 5)
+                {
+                    if (!GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback)
+                    {
+                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback = true;
+                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackTime = 15;
+                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackDist = 10;
+                    }
+
+                }
+            }
+        }
         // For double tap dash
         if (Input.GetKeyDown(KeyCode.W))
         {

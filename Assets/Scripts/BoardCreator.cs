@@ -21,6 +21,7 @@ public class BoardCreator : MonoBehaviour
     public GameObject[] wallTiles;                            // An array of wall tile prefabs.
     public GameObject[] outerWallTiles;                       // An array of outer wall tile prefabs.
     public GameObject player;
+    public GameObject slime;
 
     private TileType[][] tiles;                               // A jagged array of tile types representing the board, like a grid.
     private Room[] rooms;                                     // All the rooms that are created for this board.
@@ -100,6 +101,22 @@ public class BoardCreator : MonoBehaviour
                 Vector3 playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
                 Instantiate(player, playerPos, Quaternion.identity);
 
+            }
+            if (i == 2)
+            {
+                Vector3 playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
+                //Instantiate(player, playerPos, Quaternion.identity);
+                //GameObject hello = new GameObject();
+                //hello = slime;
+                Instantiate(slime, playerPos, Quaternion.identity);
+            }
+            if (i == 3)
+            {
+                Vector3 playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
+                //Instantiate(player, playerPos, Quaternion.identity);
+                //GameObject hello = new GameObject();
+                //hello = slime;
+                Instantiate(slime, playerPos, Quaternion.identity);
             }
         }
 
