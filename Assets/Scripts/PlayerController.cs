@@ -22,6 +22,12 @@ public class PlayerController : MonoBehaviour {
     public bool isAttacking;
     public bool isMelee;
     public bool bowSkill1;
+    public bool bowSkill2;
+    public bool bowSkill3;
+    public bool swordSkill1;
+    public bool swordSkill2;
+    public bool swordSkill3;
+    public int mana;
     public float attackTime;
     private float attackTimer;
 	public int count = 1000;
@@ -46,7 +52,12 @@ public class PlayerController : MonoBehaviour {
         count = 1000;
         dash = false;
         bowSkill1 = false;
-
+        bowSkill2 = false;
+        bowSkill3 = false;
+        swordSkill1 = false;
+        swordSkill2 = false;
+        swordSkill3 = false;
+        mana = 1000;
     }
 	
 	// Update is called once per frame
@@ -82,7 +93,7 @@ public class PlayerController : MonoBehaviour {
             // Set the menu object to active
             GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if(isMelee)
             {
@@ -111,6 +122,67 @@ public class PlayerController : MonoBehaviour {
                         bowSkill1 = true;
 
                     }
+                }
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (isMelee)
+            {
+                bowSkill2 = false;
+                transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
+                if(!swordSkill2)
+                {
+                    swordSkill2 = true;
+                    transform.GetChild(1).gameObject.SetActive(true);
+                }
+                else
+                {
+                    swordSkill2 = false;
+                }
+            }
+            else
+            {
+                swordSkill2 = false;
+                transform.GetChild(1).gameObject.SetActive(false);
+                transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(true);
+                if (!bowSkill2)
+                {
+                    bowSkill2 = true;
+                    transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(true);
+                }
+                else
+                {
+                    bowSkill2 = false;
+                }
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (isMelee)
+            {
+                bowSkill3 = false;
+                if (!swordSkill3)
+                {
+                    swordSkill3 = true;
+                }
+                else
+                {
+                    swordSkill3 = false;
+                }
+            }
+            else
+            {
+                swordSkill3 = false;
+                if (!bowSkill3)
+                {
+                    bowSkill3 = true;
+                }
+                else
+                {
+                    bowSkill3 = false;
                 }
             }
 
@@ -300,13 +372,43 @@ public class PlayerController : MonoBehaviour {
             if(isMelee)
             {
                 isMelee = false;
+                swordSkill1 = false;
+                swordSkill2 = false;
+                swordSkill3 = false;
             }
             else
             {
                 isMelee = true;
+                bowSkill1 = false;
+                bowSkill2 = false;
+                bowSkill3 = false;
             }
         }
-		if(Input.GetMouseButtonDown(0) && attackTimer<=0 && !inventoryIsActive)
+        if(bowSkill2)
+        {
+            mana--;
+            if(mana <= 0)
+            {
+                bowSkill2 = false;
+            }
+        }
+        else
+        {
+            transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
+        }
+        if (swordSkill2)
+        {
+            mana--;
+            if (mana <= 0)
+            {
+                swordSkill2 = false;
+            }
+        }
+        else
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
+        if (Input.GetMouseButtonDown(0) && attackTimer<=0 && !inventoryIsActive)
         {
 			if(!isMelee && count > 0)
 			{

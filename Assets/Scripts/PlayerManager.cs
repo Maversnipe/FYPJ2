@@ -10,6 +10,10 @@ public class PlayerManager : MonoBehaviour {
     public int m_maxHealth;
     // Player Current Health
     public int m_currentHealth;
+    // Player Max Mana
+    public int m_maxMana;
+    // Player Current Mana
+    public int m_currentMana;
     // Player Money
     public int m_moneyAmount;
 
