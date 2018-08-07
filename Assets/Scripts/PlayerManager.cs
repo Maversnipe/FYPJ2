@@ -20,6 +20,10 @@ public class PlayerManager : MonoBehaviour {
     public int skillPoints;
     // Player total skill points
     public int totalSkillPoints;
+    // Player level points
+    public int levelPoints;
+
+    public List<int> levels;
 
     public List<int> skills;
     // Player Sword Damage Bonus
@@ -59,6 +63,10 @@ public class PlayerManager : MonoBehaviour {
         {
             skills.Add(0);
         }
+        for (int i = 0; i < 6; i++)
+        {
+            levels.Add(0);
+        }
         skillPoints = 2;
         totalSkillPoints = 2;
         m_currentHealth = m_maxHealth;
@@ -68,7 +76,8 @@ public class PlayerManager : MonoBehaviour {
         m_bowBonus = 0;
         // Set Health Bonus to 0
         m_healthBonus = 0;
-
+        m_currentLevel = 1;
+        levelPoints = m_currentLevel * 6;
         // Set all bonus text to null
         m_bowBonusText = null;
         m_swordBonusText = null;
