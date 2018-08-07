@@ -44,6 +44,8 @@ public class RuneMenu : MonoBehaviour
         PlayerManager.Instance.SetBonuses(1);
         // Set the bonuses for armour
         PlayerManager.Instance.SetBonuses(2);
+        // Set Parent to inactive
+        gameObject.transform.parent.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

@@ -14,8 +14,6 @@ public class Slot : MonoBehaviour {
     public Image m_icon;
     // Item Count Text
     public Text m_countText;
-    // Item Button
-    public Button m_button;
     
     // Bool to check if slot is empty
     private bool m_isEmpty;
@@ -42,8 +40,6 @@ public class Slot : MonoBehaviour {
 
     void Update()
     {
-        if (m_containsPoint)
-            Debug.Log("You only live once");
         // Check if mouse cursor is in slot and if slot is empty
         if (!m_isEmpty && m_containsPoint)
         {
@@ -115,8 +111,7 @@ public class Slot : MonoBehaviour {
                         PlayerManager.Instance.SetBonuses(2);
                     }
                 }
-            }
-       
+            }       
         }
         else if (m_isEmpty && m_containsPoint)
         {
@@ -180,15 +175,16 @@ public class Slot : MonoBehaviour {
             }
             else if(PlayerMenu.Instance.HasTarget() && PlayerMenu.Instance.GetCurrentSlotID() == this.m_slotID)
             {
-                // Set Info box to be active
+                // Set Info box to be not active
                 PlayerMenu.Instance.m_infoBox.gameObject.SetActive(false);
             }
         }
         
+        // If the mouse is not over the slot
         if(!m_containsPoint && PlayerMenu.Instance.GetCurrentSlotID() == this.m_slotID)
         {
             // Remove info box
-            // Set Info box to be active
+            // Set Info box to be not active
             PlayerMenu.Instance.m_infoBox.gameObject.SetActive(false);
         }
     }   
