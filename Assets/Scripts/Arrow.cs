@@ -10,6 +10,7 @@ public class Arrow : MonoBehaviour {
     public float moveSpeed;
     private Rigidbody2D body;
     public int Damage;
+    public GameObject damageCounter;
     // Use this for initialization
     void Start () {
         FlightTime = 10.5f;
@@ -48,6 +49,8 @@ public class Arrow : MonoBehaviour {
         {
             other.gameObject.GetComponent<AI>().MinusHP(Damage);
             Destroy(gameObject);
+            var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+            clone.GetComponentInChildren<DamageNumbers>().dmg = Damage;
         }
     }
 }

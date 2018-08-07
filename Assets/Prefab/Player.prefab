@@ -263,6 +263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDmg: 10
+  damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
+    type: 2}
 --- !u!114 &114558145776712424
 MonoBehaviour:
   m_ObjectHideFlags: 1
