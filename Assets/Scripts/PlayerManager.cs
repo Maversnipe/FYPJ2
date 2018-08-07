@@ -16,7 +16,12 @@ public class PlayerManager : MonoBehaviour {
     public int m_currentMana;
     // Player Money
     public int m_moneyAmount;
+    // Player skill points
+    public int skillPoints;
+    // Player total skill points
+    public int totalSkillPoints;
 
+    public List<int> skills;
     // Player Sword Damage Bonus
     private int m_swordBonus;
     // Player Bow Damage Bonus
@@ -48,6 +53,14 @@ public class PlayerManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        skills.Clear();
+        // 1 = bow, 2 = sword;
+        for(int i = 0; i<3;i++)
+        {
+            skills.Add(0);
+        }
+        skillPoints = 2;
+        totalSkillPoints = 2;
         m_currentHealth = m_maxHealth;
         // Set Sword Damage Bonus to 0
         m_swordBonus = 0;
