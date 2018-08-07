@@ -6,7 +6,6 @@ public class Bow : MonoBehaviour {
 
     public float rotationOffset;
     public Vector2 diff;
-
     public Transform arrowPrefab;
 	// Use this for initialization
 	void Start () {
@@ -30,10 +29,29 @@ public class Bow : MonoBehaviour {
             transform.rotation = Quaternion.Euler(0f, 0f, rotAngle + rotationOffset);
             transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking = false;
             Instantiate(arrowPrefab, transform.position, transform.rotation);
-            diff.Set((Input.mousePosition.x - (float)(Screen.width * 0.5)), (Input.mousePosition.y - (float)(Screen.height * 0.5)));
-            diff.Normalize();
-            arrowPrefab.GetComponent<Arrow>().dir.Set(diff.x, diff.y);
-            Debug.Log(diff);
+        }
+        if(transform.parent.parent.gameObject.GetComponent<PlayerController>().bowSkill1)
+        {
+            int hello = 0;
+            do
+            {
+                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+                {
+                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
+                    if (dist < 10)
+                    {
+                        Instantiate(arrowPrefab, transform.position, transform.rotation);
+                        arrowPrefab.GetComponent<Arrow>().target = GameObject.FindGameObjectsWithTag("Enemy")[i];
+                        arrowPrefab.GetComponent<Arrow>().skill1 = true;
+                        hello++;
+                        if (hello == 3)
+                        {
+                            break;
+                        }
+                    }
+                }
+            } while (hello != 3);
+
         }
     }
 }

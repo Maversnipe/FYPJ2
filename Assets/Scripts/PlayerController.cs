@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
     public bool dash;
     public bool isAttacking;
     public bool isMelee;
+    public bool bowSkill1;
     public float attackTime;
     private float attackTimer;
 	public int count = 1000;
@@ -44,12 +45,14 @@ public class PlayerController : MonoBehaviour {
         dashTime = 0f;
         count = 1000;
         dash = false;
+        bowSkill1 = false;
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
+
+        bowSkill1 = false;
         for(int i = 0; i < doubleTap.Count; i++)
         {
             doubleTap[i].time -= Time.deltaTime;
@@ -81,20 +84,36 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            for(int i = 0; i< GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+            if(isMelee)
             {
-                float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
-                if (dist < 5)
+                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
                 {
-                    if (!GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback)
+                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
+                    if (dist < 5)
                     {
-                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback = true;
-                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackTime = 15;
-                        GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackDist = 10;
-                    }
+                        if (!GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback)
+                        {
+                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback = true;
+                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackTime = 15;
+                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackDist = 10;
+                        }
 
+                    }
                 }
             }
+            else
+            {
+                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+                {
+                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
+                    if (dist < 10)
+                    {
+                        bowSkill1 = true;
+
+                    }
+                }
+            }
+
         }
         // For double tap dash
         if (Input.GetKeyDown(KeyCode.W))

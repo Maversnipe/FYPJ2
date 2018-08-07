@@ -8,9 +8,11 @@ public class Arrow : MonoBehaviour {
     public float FlightTime;
     public float FlightTimer;
     public float moveSpeed;
+    public bool skill1;
     private Rigidbody2D body;
     public int Damage;
     public GameObject damageCounter;
+    public GameObject target;
     // Use this for initialization
     void Start () {
         FlightTime = 10.5f;
@@ -18,19 +20,30 @@ public class Arrow : MonoBehaviour {
         moveSpeed = 10f;
         Damage = 10;
         body = GetComponent<Rigidbody2D>();
-        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Bow").Length; i++)
+        if(!skill1)
         {
-            if(GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.x == transform.position.x && GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.y == transform.position.y)
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Bow").Length; i++)
             {
-                dir.Set(GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.x, GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.y);
+                if (GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.x == transform.position.x && GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.y == transform.position.y)
+                {
+                    dir.Set(GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.x, GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.y);
+                }
             }
         }
+
             // dir.Set(GameObject.Find("Bow").GetComponent<Bow>().diff.x, GameObject.Find("Bow").GetComponent<Bow>().diff.y);
         }
 	
 	// Update is called once per frame
 	void Update () {
 
+        if(skill1)
+        {
+            FlightTimer = 0;
+            dir.Set(target.transform.position.y - transform.position.x, target.transform.position.y - transform.position.y);
+            dir.Normalize();
+            transform.rotation = Quaternion.Euler(0f, 0f, (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg) - 45);
+        }
 		if(FlightTimer <= FlightTime || transform.childCount <=0)
         {
             body.velocity = dir * moveSpeed;
@@ -51,6 +64,10 @@ public class Arrow : MonoBehaviour {
             Destroy(gameObject);
             var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
             clone.GetComponentInChildren<DamageNumbers>().dmg = Damage;
+        }
+        if (other.gameObject.tag == "Wall")
+        {
+            Destroy(gameObject);
         }
     }
 }
