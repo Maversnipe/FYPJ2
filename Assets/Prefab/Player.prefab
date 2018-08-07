@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 114691455428322044}
   m_Layer: 0
   m_Name: Bow
-  m_TagString: Untagged
+  m_TagString: Bow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,6 +249,8 @@ MonoBehaviour:
   isAttacking: 0
   isMelee: 0
   attackTime: 0.2
+  count: 1
+  mouseClick: {x: 0, y: 0}
 --- !u!114 &114367383892033286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -287,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationOffset: -45
-  diff: {x: 0, y: 0, z: 0}
+  diff: {x: 0, y: 0}
   arrowPrefab: {fileID: 4352830753801474, guid: a82335e66daf20f4ea425066f35a3fa3,
     type: 2}
 --- !u!212 &212035106725450416

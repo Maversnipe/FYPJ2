@@ -63,7 +63,7 @@ public class AI : MonoBehaviour {
         {
             knockback = false;
             stun = true;
-            stunTimer = 0.5;
+            stunTimer = 0.5f;
         }
         if(stunTimer <= 0)
         {

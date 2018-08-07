@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bow : MonoBehaviour {
 
     public float rotationOffset;
-    public Vector3 diff;
+    public Vector2 diff;
 
     public Transform arrowPrefab;
 	// Use this for initialization
@@ -15,18 +15,25 @@ public class Bow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        diff.Set((Input.mousePosition.x - (float)(Screen.width * 0.5)), (Input.mousePosition.y - (float)(Screen.height * 0.5)));
         diff.Normalize();
 
         float rotAngle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotAngle + rotationOffset);
-        if (GameObject.Find("Player"))
+
+        if (transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking && !transform.parent.parent.gameObject.GetComponent<PlayerController>().isMelee)
         {
-            if (GameObject.Find("Player").GetComponent<PlayerController>().isAttacking && !GameObject.Find("Player").GetComponent<PlayerController>().isMelee)
-            {
-                GameObject.Find("Player").GetComponent<PlayerController>().isAttacking = false;
-                Instantiate(arrowPrefab, transform.position, transform.rotation);
-            }
+            diff.Set((Input.mousePosition.x - (float)(Screen.width * 0.5)), (Input.mousePosition.y - (float)(Screen.height * 0.5)));
+            diff.Normalize();
+
+            rotAngle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rotAngle + rotationOffset);
+            transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking = false;
+            Instantiate(arrowPrefab, transform.position, transform.rotation);
+            diff.Set((Input.mousePosition.x - (float)(Screen.width * 0.5)), (Input.mousePosition.y - (float)(Screen.height * 0.5)));
+            diff.Normalize();
+            arrowPrefab.GetComponent<Arrow>().dir.Set(diff.x, diff.y);
+            Debug.Log(diff);
         }
     }
 }

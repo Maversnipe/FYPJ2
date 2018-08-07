@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour {
     public bool isMelee;
     public float attackTime;
     private float attackTimer;
-	private int count = 1;
+	public int count = 1000;
+    public Vector2 mouseClick;
     public class DoubleTap
     {
         public KeyCode key;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour {
         dashSpeedLeft = 1;
         dashSpeedRight = 1;
         dashTime = 0f;
+        count = 1000;
         dash = false;
 
     }
@@ -287,8 +289,9 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0) && attackTimer<=0 && !inventoryIsActive)
         {
 			if(!isMelee && count > 0)
-			{            
-				attackTimer = attackTime;
+			{
+                //mouseClick.Set(Camera.main.ScreenToWorldPoint(Input.mousePosition).x - transform.position.x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y);
+                attackTimer = attackTime;
 				isAttacking = true;
 				body.velocity = Vector2.zero;
 				if(isMelee)

@@ -495,6 +495,7 @@ MonoBehaviour:
   outerWallTiles:
   - {fileID: 1240539252221048, guid: cbfcb9a9e01d8ef46833cf718ca28d4e, type: 2}
   player: {fileID: 1230484801833114, guid: 33b8a85c071a5e94ea6cfbfffe27ceeb, type: 2}
+  slime: {fileID: 1652995586385628, guid: 973ea7c8142f52648b606740b1a6cd9c, type: 2}
 --- !u!1001 &1961470724
 Prefab:
   m_ObjectHideFlags: 0

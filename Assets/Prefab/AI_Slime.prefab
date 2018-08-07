@@ -90,10 +90,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  target: {x: 0, y: 0}
+  dir: {x: 0, y: 0}
+  shortestDist: 1000
   cooldownTime: 0
   AttackDmg: 1
   currentHP: 0
   maxHP: 20
+  knockback: 0
+  knockbackTime: 0
+  knockbackDist: 0
+  stun: 0
+  stunTimer: 0
 --- !u!212 &212385287542516968
 SpriteRenderer:
   m_ObjectHideFlags: 1
