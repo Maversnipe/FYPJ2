@@ -17,7 +17,6 @@ public class CentralHubCameraMovement : MonoBehaviour {
         float posX, posY;
         // Set the temp pos to player pos
         posX = m_player.transform.position.x;
-        Debug.Log(posX);
         posY = m_player.transform.position.y;
 
         // Check if camera will go out of bounds

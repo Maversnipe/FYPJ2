@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour {
             // Set the menu object to active
             GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if(isMelee)
             {
@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour {
             }
 
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if (isMelee)
             {
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour {
             }
 
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             if (isMelee)
             {
@@ -453,5 +453,32 @@ public class PlayerController : MonoBehaviour {
         anim.SetFloat("LastMoveX", dir.x);
         anim.SetFloat("LastMoveY", dir.y);
         anim.SetBool("isMoving", isMoving);
+
+        // Check if shop is active
+        if (ShopMenu.Instance.MenuIsActive())
+        {
+            // If player presses E, interact
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Make shop inactive
+                ShopMenu.Instance.transform.GetChild(0).gameObject.SetActive(false);
+                // Set Shop Menu as inative
+                ShopMenu.Instance.SetMenuActive(false);
+            }
+        }
+        else
+        {
+            // Check if there are interactables
+            if (PlayerManager.Instance.m_interactable != null)
+            {
+                // If player presses E, interact
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    // Interact
+                    PlayerManager.Instance.m_interactable.Interact();
+                }
+            }
+        }
+        
     }
 }

@@ -53,7 +53,7 @@ public class PlayerMenu : MonoBehaviour {
             m_targetImage.rectTransform.position = new Vector3(Input.mousePosition.x, 
                                                                Input.mousePosition.y + m_targetImage.rectTransform.sizeDelta.y * 0.5f, 0f);
         }
-	}
+    }
     
     // Getter for has target
     public bool HasTarget()

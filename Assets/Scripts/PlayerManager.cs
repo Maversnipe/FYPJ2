@@ -36,6 +36,11 @@ public class PlayerManager : MonoBehaviour {
     // Text that shows Bow Bonus
     private Text m_bowBonusText;
 
+    // Interactable on focus
+    public Interactable m_interactable;
+    // Player GO
+    public GameObject m_player;
+
     // Make this a Singleton
     private static PlayerManager _instance;
     public static PlayerManager Instance { get { return _instance; } }
@@ -73,6 +78,9 @@ public class PlayerManager : MonoBehaviour {
         m_bowBonusText = null;
         m_swordBonusText = null;
         m_armourBonusText = null;
+
+        // Set the player
+        m_player = GameObject.FindGameObjectWithTag("Player");
     }
 	
 	// Update is called once per frame

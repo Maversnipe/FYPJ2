@@ -43,8 +43,7 @@ public class ShopMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+    }
 
     // Change Money Amount
     public void ChangeMoneyAmount()
