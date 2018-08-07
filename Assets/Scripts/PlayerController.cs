@@ -247,8 +247,9 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
             transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+
         }
         if (!isAttacking)
         {
