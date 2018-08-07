@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour {
     public int m_maxHealth;
     // Player Current Health
     public int m_currentHealth;
+    // Player Money
+    public int m_moneyAmount;
 
     // Player Sword Damage Bonus
     private int m_swordBonus;
@@ -49,6 +51,7 @@ public class PlayerManager : MonoBehaviour {
         m_bowBonus = 0;
         // Set Health Bonus to 0
         m_healthBonus = 0;
+
         // Set all bonus text to null
         m_bowBonusText = null;
         m_swordBonusText = null;
@@ -92,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
                         // Cast item as a sword rune
                         Rune swordRune = (Rune)RuneMenu.Instance.m_SwordSlot_1.m_item.Peek();
                         // Add sword bonus to the sword bonus var
-                        swordBonus += swordRune.m_runeAbility;
+                        swordBonus += swordRune.m_runePower;
                     }
 
                     // Check second rune slot if it is empty
@@ -101,7 +104,7 @@ public class PlayerManager : MonoBehaviour {
                         // Cast item as a sword rune
                         Rune swordRune = (Rune)RuneMenu.Instance.m_SwordSlot_2.m_item.Peek();
                         // Add sword bonus to the sword bonus var
-                        swordBonus += swordRune.m_runeAbility;
+                        swordBonus += swordRune.m_runePower;
                     }
                     // Set sword bonus
                     m_swordBonus = swordBonus;
@@ -126,7 +129,7 @@ public class PlayerManager : MonoBehaviour {
                         // Cast item as a sword rune
                         Rune bowRune = (Rune)RuneMenu.Instance.m_BowSlot_1.m_item.Peek();
                         // Add sword bonus to the sword bonus var
-                        bowBonus += bowRune.m_runeAbility;
+                        bowBonus += bowRune.m_runePower;
                     }
 
                     // Check second rune slot if it is empty
@@ -135,7 +138,7 @@ public class PlayerManager : MonoBehaviour {
                         // Cast item as a sword rune
                         Rune bowRune = (Rune)RuneMenu.Instance.m_BowSlot_2.m_item.Peek();
                         // Add sword bonus to the sword bonus var
-                        bowBonus += bowRune.m_runeAbility;
+                        bowBonus += bowRune.m_runePower;
                     }
                     // Set bow bonus
                     m_bowBonus = bowBonus;
@@ -162,7 +165,7 @@ public class PlayerManager : MonoBehaviour {
                         Rune armourRune = (Rune)RuneMenu.Instance.m_ArmourSlot_1.m_item.Peek();
                         Debug.Log(armourRune);
                         // Add sword bonus to the sword bonus var
-                        armourBonus += armourRune.m_runeAbility;
+                        armourBonus += armourRune.m_runePower;
                     }
 
                     // Check second rune slot if it is empty
@@ -172,8 +175,8 @@ public class PlayerManager : MonoBehaviour {
                         // Cast item as a sword rune
                         Rune armourRune = (Rune)RuneMenu.Instance.m_ArmourSlot_2.m_item.Peek();
                         // Add sword bonus to the sword bonus var
-                        armourBonus += armourRune.m_runeAbility;
-                        Debug.Log(armourRune.m_runeAbility);
+                        armourBonus += armourRune.m_runePower;
+                        Debug.Log(armourRune.m_runePower);
                     }
                     // Set health bonus
                     m_healthBonus = armourBonus;
@@ -193,5 +196,11 @@ public class PlayerManager : MonoBehaviour {
                     break;
                 }
         }
+    }
+
+    // Level player up
+    public void LevelUp()
+    {
+
     }
 }

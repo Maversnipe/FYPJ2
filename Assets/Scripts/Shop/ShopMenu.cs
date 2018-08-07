@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerMenu : MonoBehaviour {
+public class ShopMenu : MonoBehaviour {
 
     // Make this a Singleton
-    private static PlayerMenu _instance;
-    public static PlayerMenu Instance { get { return _instance; } }
+    private static ShopMenu _instance;
+    public static ShopMenu Instance { get { return _instance; } }
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -22,49 +22,36 @@ public class PlayerMenu : MonoBehaviour {
 
     // Info box image
     public Image m_infoBox;
-    // Target Item (Basically the selected Item)
-    public Stack<Item> m_targetItem;
-    // The image of the target item
-    public Image m_targetImage;
-
+    // Money Counter
+    public Text m_playerAmount;
+    
     // Current info box slot id
     private int m_currSlotID;
-    // Check if there is a target item
-    private bool m_hasTarget;
     // Check if player menu is active
     private bool m_menuIsActive;
 
     // Use this for initialization
-    void Start () {
-        // Set selected item to null
-        m_targetItem = new Stack<Item>();
-        // Set has target to false
-        m_hasTarget = false;
+    void Start ()
+    {
         // Set menu to not active
         m_menuIsActive = false;
-	}
+        // Set the amount of money
+        ChangeMoneyAmount();
+        // Set currSlotID
+        m_currSlotID = -1;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        // Checks if there is a target item
-        if(m_hasTarget)
-        {
-            // Set the position to follow mouse cursor
-            m_targetImage.rectTransform.position = new Vector3(Input.mousePosition.x, 
-                                                               Input.mousePosition.y + m_targetImage.rectTransform.sizeDelta.y * 0.5f, 0f);
-        }
+		
 	}
-    
-    // Getter for has target
-    public bool HasTarget()
-    {
-        return m_hasTarget;
-    }
 
-    // Setter for has target
-    public void SetHasTarget(bool _hasTarget)
+    // Change Money Amount
+    public void ChangeMoneyAmount()
     {
-        m_hasTarget = _hasTarget;
+        // Set the new text to the player curr amount of money
+        string amount = "$" + PlayerManager.Instance.m_moneyAmount.ToString();
+        m_playerAmount.text = amount;
     }
 
     // Getter for has current slot id

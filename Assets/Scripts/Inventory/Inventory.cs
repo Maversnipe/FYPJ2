@@ -23,12 +23,6 @@ public class Inventory : MonoBehaviour {
 
     // Item Database
     private ItemDatabase m_database;
-    // Bool that determined if info box is active
-    private bool m_infoActive = false;
-    // Bool that determines if an item is being dragged
-    private bool m_itemIsDrag = false;
-    // Bool that keeps track if left mouse button is down
-    private bool m_LMBDown;
     // Array that contains all inv slots
     private GameObject[] m_slotList;
     // Number of slots used
@@ -65,11 +59,13 @@ public class Inventory : MonoBehaviour {
     }
 
     // Add Item to inventory
-    public void Add (Item _item)
+    public bool Add (Item _item)
     {
         // Check if the inventory is full
         if (m_numSlotsUsed >= m_numSlots)
-            return;
+        {
+            return false;
+        }
 
         // Checks if item is stackable
         if (_item.m_stackable)
@@ -120,6 +116,9 @@ public class Inventory : MonoBehaviour {
                 }
             }
         }
+
+        // Item is added
+        return true;
     }
 
     // Remove item from inventory
