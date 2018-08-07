@@ -10,6 +10,15 @@ public class PlayerController : MonoBehaviour {
     private Vector2 dir;
     private Animator anim;
     private Rigidbody2D body;
+    public float dashSpeedUp;
+    public float dashSpeedDown;
+    public float dashSpeedLeft;
+    public float dashSpeedRight;
+    public float dashTime;
+    public float dashTimeSet;
+    public float dashSpeed;
+    public float pressedTime;
+    public bool dash;
     public bool isAttacking;
     public bool isMelee;
     public float attackTime;
@@ -27,12 +36,39 @@ public class PlayerController : MonoBehaviour {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         isMelee = false;
+        dashSpeedUp = 1;
+        dashSpeedDown = 1;
+        dashSpeedLeft = 1;
+        dashSpeedRight = 1;
+        dashTime = 0f;
+        dash = false;
 
     }
 	
 	// Update is called once per frame
 	void Update () {
         
+        for(int i = 0; i < doubleTap.Count; i++)
+        {
+            doubleTap[i].time -= Time.deltaTime;
+            if(doubleTap[i].time <= 0)
+            {
+                doubleTap.Remove(doubleTap[i]);
+                i--;
+            }
+        }
+        if(dash)
+        {
+            if(dashTime <= 0)
+            {
+                dashSpeedUp = 1;
+                dashSpeedDown = 1;
+                dashSpeedLeft = 1;
+                dashSpeedRight = 1;
+                dash = false;
+            }
+        }
+        dashTime -= 1;
         // Check if player presses Inventory button
         if(Input.GetKeyDown(KeyCode.Tab))
         {
@@ -40,6 +76,127 @@ public class PlayerController : MonoBehaviour {
             PlayerMenu.Instance.SetMenuActive(!PlayerMenu.Instance.MenuIsActive());
             // Set the menu object to active
             GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
+        }
+        // For double tap dash
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            bool check = false;
+            for(int i =0; i < doubleTap.Count; i++)
+            {
+                if(doubleTap[i].key == KeyCode.W)
+                {
+                    if(doubleTap[i].time > 0)
+                    {
+                        check = true;
+                        if(!dash)
+                        {
+                            dash = true;
+                            dashTime = dashTimeSet;
+                            dashSpeedUp = dashTime;
+                        }
+                        doubleTap[i].time = 0;
+                    }
+                    break;
+                }
+            }
+            if(!check)
+            {
+                DoubleTap pressedKey = new DoubleTap();
+                pressedKey.key = KeyCode.W;
+                pressedKey.time = pressedTime;
+                doubleTap.Add(pressedKey);
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            bool check = false;
+            for (int i = 0; i < doubleTap.Count; i++)
+            {
+                if (doubleTap[i].key == KeyCode.A)
+                {
+                    if (doubleTap[i].time > 0)
+                    {
+                        check = true;
+                        if (!dash)
+                        {
+                            dash = true;
+                            dashTime = dashTimeSet;
+                            dashSpeedLeft = dashSpeed;
+                        }
+                        doubleTap[i].time = 0;
+                    }
+                    break;
+                }
+            }
+            if (!check)
+            {
+                DoubleTap pressedKey = new DoubleTap();
+                pressedKey.key = KeyCode.A;
+                pressedKey.time = pressedTime;
+                doubleTap.Add(pressedKey);
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            bool check = false;
+            for (int i = 0; i < doubleTap.Count; i++)
+            {
+                if (doubleTap[i].key == KeyCode.S)
+                {
+                    if (doubleTap[i].time > 0)
+                    {
+                        check = true;
+                        if (!dash)
+                        {
+                            dash = true;
+                            dashTime = dashTimeSet;
+                            dashSpeedDown =dashSpeed;
+                        }
+                        doubleTap[i].time = 0;
+                    }
+                    break;
+                }
+            }
+            if (!check)
+            {
+                DoubleTap pressedKey = new DoubleTap();
+                pressedKey.key = KeyCode.S;
+                pressedKey.time = pressedTime;
+                doubleTap.Add(pressedKey);
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            bool check = false;
+            for (int i = 0; i < doubleTap.Count; i++)
+            {
+                if (doubleTap[i].key == KeyCode.D)
+                {
+                    if (doubleTap[i].time > 0)
+                    {
+                        check = true;
+                        if (!dash)
+                        {
+                            dash = true;
+                            dashTime = dashTimeSet;
+                            dashSpeedRight = dashSpeed;
+                        }
+                        doubleTap[i].time = 0;
+                    }
+                    break;
+                }
+            }
+            if (!check)
+            {
+                DoubleTap pressedKey = new DoubleTap();
+                pressedKey.key = KeyCode.D;
+                pressedKey.time = pressedTime;
+                doubleTap.Add(pressedKey);
+            }
+
         }
 
         bool inventoryIsActive = PlayerMenu.Instance.MenuIsActive();
@@ -60,6 +217,15 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetAxisRaw("Horizontal") > 0.5 || Input.GetAxisRaw("Horizontal") < -0.5)
             {
                 body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed, body.velocity.y);
+                if (Input.GetAxisRaw("Horizontal") > 0)
+                {
+                    body.velocity *= dashSpeedRight;
+                }
+                if (Input.GetAxisRaw("Horizontal") < 0)
+                {
+                    body.velocity *= dashSpeedLeft;
+                }
+                dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
                 isMoving = true;
                 dir = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
 
@@ -68,15 +234,25 @@ public class PlayerController : MonoBehaviour {
             {
                 body.velocity = new Vector2(body.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);
                 isMoving = true;
+                if(Input.GetAxisRaw("Vertical") > 0)
+                {
+                    body.velocity *= dashSpeedUp;
+                }
+                if (Input.GetAxisRaw("Vertical") < 0)
+                {
+                    body.velocity *= dashSpeedDown;
+                }
                 dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
             }
             if (Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f)
             {
                 body.velocity = new Vector2(0f, body.velocity.y);
+                //body.velocity *= dashSpeedLeft;
             }
             if (Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f)
             {
                 body.velocity = new Vector2(body.velocity.x, 0f);
+                //body.velocity *= dashSpeedDown;
             }
         }
 
