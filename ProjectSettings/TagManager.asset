@@ -8,6 +8,10 @@ TagManager:
   - ItemDatabase
   - InvSlot
   - Inventory
+  - ArmourBonusText
+  - BowBonusText
+  - SwordBonusText
+  - Shop
   layers:
   - Default
   - TransparentFX

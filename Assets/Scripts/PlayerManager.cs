@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
     // Player Current Level
@@ -13,9 +14,16 @@ public class PlayerManager : MonoBehaviour {
     // Player Sword Damage Bonus
     private int m_swordBonus;
     // Player Bow Damage Bonus
-    private int m_BowBonus;
+    private int m_bowBonus;
     // Player Health Bonus
     private int m_healthBonus;
+
+    // Text that shows Armour Bonus
+    private Text m_armourBonusText;
+    // Text that shows Sword Bonus
+    private Text m_swordBonusText;
+    // Text that shows Bow Bonus
+    private Text m_bowBonusText;
 
     // Make this a Singleton
     private static PlayerManager _instance;
@@ -38,10 +46,14 @@ public class PlayerManager : MonoBehaviour {
         // Set Sword Damage Bonus to 0
         m_swordBonus = 0;
         // Set Bow Damage Bonus to 0
-        m_BowBonus = 0;
+        m_bowBonus = 0;
         // Set Health Bonus to 0
         m_healthBonus = 0;
-	}
+        // Set all bonus text to null
+        m_bowBonusText = null;
+        m_swordBonusText = null;
+        m_armourBonusText = null;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -93,6 +105,14 @@ public class PlayerManager : MonoBehaviour {
                     }
                     // Set sword bonus
                     m_swordBonus = swordBonus;
+                    string newBonusText = "Sword Damage Bonus: +" + m_swordBonus.ToString();
+                    if(m_swordBonusText == null)
+                    {
+                        // Set Sword Bonus Text
+                        m_swordBonusText = GameObject.FindGameObjectWithTag("SwordBonusText").GetComponent<Text>();
+                    }
+                    m_swordBonusText.text = newBonusText;
+                    Debug.Log("Sword WHAT");
                     break;
                 }
 
@@ -118,7 +138,14 @@ public class PlayerManager : MonoBehaviour {
                         bowBonus += bowRune.m_runeAbility;
                     }
                     // Set bow bonus
-                    m_BowBonus = bowBonus;
+                    m_bowBonus = bowBonus;
+                    string newBonusText = "Bow Damage Bonus: +" + m_bowBonus.ToString();
+                    if(m_bowBonusText == null)
+                    {
+                        // Set Bow Bonus Text
+                        m_bowBonusText = GameObject.FindGameObjectWithTag("BowBonusText").GetComponent<Text>();
+                    }
+                    m_bowBonusText.text = newBonusText;
                     break;
                 }
 
@@ -150,6 +177,14 @@ public class PlayerManager : MonoBehaviour {
                     }
                     // Set health bonus
                     m_healthBonus = armourBonus;
+                    string newBonusText = "Health Bonus: +" + m_healthBonus.ToString();
+                    // Check if the text is null
+                    if (m_armourBonusText == null)
+                    {
+                        // Set Armour Bonus Text
+                        m_armourBonusText = GameObject.FindGameObjectWithTag("ArmourBonusText").GetComponent<Text>();
+                    }
+                    m_armourBonusText.text = newBonusText;
                     break;
                 }
 
