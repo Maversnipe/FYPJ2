@@ -12,6 +12,7 @@ TagManager:
   - BowBonusText
   - SwordBonusText
   - Shop
+  - Bow
   layers:
   - Default
   - TransparentFX

@@ -99,11 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e895cc0e144eed64885cc289ce074488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dir: {x: -0.3787099, y: 0.009797548}
+  dir: {x: -0.012314337, y: 0.9999242}
   FlightTime: 0
   FlightTimer: 0
   moveSpeed: 0
   Damage: 0
+  damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
+    type: 2}
 --- !u!212 &212043092575163956
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -134,7 +136,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1276784403
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300008, guid: 92b5e338a64900848ae6948cabd0586e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

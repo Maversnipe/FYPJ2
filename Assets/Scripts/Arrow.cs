@@ -10,16 +10,23 @@ public class Arrow : MonoBehaviour {
     public float moveSpeed;
     private Rigidbody2D body;
     public int Damage;
+    public GameObject damageCounter;
     // Use this for initialization
     void Start () {
-        FlightTime = 1.5f;
+        FlightTime = 10.5f;
         FlightTimer = 0f;
         moveSpeed = 10f;
         Damage = 10;
         body = GetComponent<Rigidbody2D>();
-
-        dir.Set(GameObject.Find("Bow").GetComponent<Bow>().diff.x, GameObject.Find("Bow").GetComponent<Bow>().diff.y);
-    }
+        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Bow").Length; i++)
+        {
+            if(GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.x == transform.position.x && GameObject.FindGameObjectsWithTag("Bow")[i].transform.position.y == transform.position.y)
+            {
+                dir.Set(GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.x, GameObject.FindGameObjectsWithTag("Bow")[i].GetComponent<Bow>().diff.y);
+            }
+        }
+            // dir.Set(GameObject.Find("Bow").GetComponent<Bow>().diff.x, GameObject.Find("Bow").GetComponent<Bow>().diff.y);
+        }
 	
 	// Update is called once per frame
 	void Update () {
@@ -42,6 +49,8 @@ public class Arrow : MonoBehaviour {
         {
             other.gameObject.GetComponent<AI>().MinusHP(Damage);
             Destroy(gameObject);
+            var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+            clone.GetComponentInChildren<DamageNumbers>().dmg = Damage;
         }
     }
 }

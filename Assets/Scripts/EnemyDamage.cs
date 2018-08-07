@@ -5,8 +5,9 @@ using UnityEngine;
 public class EnemyDamage : MonoBehaviour {
 
     public int attackDmg;
-	// Use this for initialization
-	void Start () {
+    public GameObject damageCounter;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -17,9 +18,11 @@ public class EnemyDamage : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy" && GameObject.Find("Player").GetComponent<PlayerController>().isAttacking)
+        if (other.gameObject.tag == "Enemy" && transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking)
         {
             other.gameObject.GetComponent<AI>().MinusHP(attackDmg);
+            var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+            clone.GetComponentInChildren<DamageNumbers>().dmg = attackDmg;
         }
     }
 }
