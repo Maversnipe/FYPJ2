@@ -29,6 +29,9 @@ public class Shop : MonoBehaviour {
 
         // Set the items in the shop
         SetShopItems();
+
+        // Set parent to inactive
+        gameObject.transform.parent.gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
