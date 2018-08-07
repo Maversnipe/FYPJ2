@@ -9,6 +9,7 @@ public class SkillTree : MonoBehaviour {
     public Button[] buttons;
     private int TotalSkillpoint;
     private int unspent;
+    public Text points;
 	void Start () {
         TotalSkillpoint = PlayerManager.Instance.totalSkillPoints;
         unspent = PlayerManager.Instance.skillPoints;
@@ -16,6 +17,7 @@ public class SkillTree : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        points.text = "" + unspent;
         TotalSkillpoint = PlayerManager.Instance.totalSkillPoints;
         unspent = PlayerManager.Instance.skillPoints;
         for (int i = 0; i < PlayerManager.Instance.skills.Count; i++)
