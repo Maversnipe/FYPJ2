@@ -52,6 +52,8 @@ public class ShopInteract : Interactable {
                 m_isFocus = false;
                 // Set text to be inactive
                 m_interactionText.gameObject.SetActive(false);
+                // Set Shop Menu to be inactive
+                ShopMenu.Instance.SetMenuActive(false);
             }
         }
         else
