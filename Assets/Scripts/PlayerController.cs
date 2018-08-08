@@ -456,7 +456,11 @@ public class PlayerController : MonoBehaviour {
         if (swordSkill2)
         {
             PlayerManager.Instance.m_currentMana--;
-            PlayerManager.Instance.m_currentHealth --;
+            if(!PlayerManager.Instance.invulnerable)
+            {
+                PlayerManager.Instance.m_currentHealth--;
+            }
+
             if (PlayerManager.Instance.m_currentMana <= 0)
             {
                 swordSkill2 = false;
