@@ -62,6 +62,21 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if(Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            if(Hotbar.Instance.GetInstanceID() == 0)
+            {
+                PlayerManager.Instance.arrowType = 0;
+            }
+            if (Hotbar.Instance.GetInstanceID() == 1)
+            {
+                PlayerManager.Instance.arrowType = 1;
+            }
+            if (Hotbar.Instance.GetInstanceID() == 2)
+            {
+                PlayerManager.Instance.arrowType = 2;
+            }
+        }
         bowSkill1 = false;
         for(int i = 0; i < doubleTap.Count; i++)
         {
@@ -113,6 +128,8 @@ public class PlayerController : MonoBehaviour {
                         }
                     }
                     PlayerManager.Instance.m_currentMana -= 10;
+
+
                 }
 
             }
@@ -129,6 +146,22 @@ public class PlayerController : MonoBehaviour {
 
                     }
                 }
+                    if(!PlayerManager.Instance.unlimited)
+                    {
+                        if (PlayerManager.Instance.arrowType == 0)
+                        {
+                            Inventory.Instance.Remove("Arrow", 1);
+                        }
+                        if (PlayerManager.Instance.arrowType == 1)
+                        {
+                            Inventory.Instance.Remove("Slow Arrow", 1);
+                        }
+                        if (PlayerManager.Instance.arrowType == 2)
+                        {
+                            Inventory.Instance.Remove("Homing Arrow", 1);
+                        }
+                    }
+                 
                     PlayerManager.Instance.m_currentMana -= 10;
                 }
             }
@@ -395,7 +428,23 @@ public class PlayerController : MonoBehaviour {
         if(bowSkill2)
         {
             PlayerManager.Instance.m_currentMana--;
-            if(PlayerManager.Instance.m_currentMana <= 0)
+            if (!PlayerManager.Instance.unlimited)
+            {
+                if (PlayerManager.Instance.arrowType == 0)
+                {
+                    Inventory.Instance.Remove("Arrow", 1);
+                }
+                if (PlayerManager.Instance.arrowType == 1)
+                {
+                    Inventory.Instance.Remove("Slow Arrow", 1);
+                }
+                if (PlayerManager.Instance.arrowType == 2)
+                {
+                    Inventory.Instance.Remove("Homing Arrow", 1);
+                }
+            }
+
+            if (PlayerManager.Instance.m_currentMana <= 0)
             {
                 bowSkill2 = false;
             }
@@ -446,9 +495,25 @@ public class PlayerController : MonoBehaviour {
 					anim.SetBool("isAttacking", isAttacking);
 				}
 				count--;
-				//GameObject.Find ("Inventory").GetComponent<Inventory> ().RemoveItem (2);
-			}
-			if(isMelee)
+                if (!PlayerManager.Instance.unlimited)
+                {
+                    if (PlayerManager.Instance.arrowType == 0)
+                    {
+                        Inventory.Instance.Remove("Arrow", 1);
+                    }
+                    if (PlayerManager.Instance.arrowType == 1)
+                    {
+                        Inventory.Instance.Remove("Slow Arrow", 1);
+                    }
+                    if (PlayerManager.Instance.arrowType == 2)
+                    {
+                        Inventory.Instance.Remove("Homing Arrow", 1);
+                    }
+                }
+
+                //GameObject.Find ("Inventory").GetComponent<Inventory> ().RemoveItem (2);
+            }
+            if (isMelee)
 			{
 				attackTimer = attackTime;
 				isAttacking = true;

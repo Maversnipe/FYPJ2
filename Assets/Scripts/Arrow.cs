@@ -20,7 +20,7 @@ public class Arrow : MonoBehaviour {
         moveSpeed = 10f;
         Damage = PlayerManager.Instance.m_dmg;
         body = GetComponent<Rigidbody2D>();
-        if(!skill1)
+        if(!skill1 || PlayerManager.Instance.arrowType != 3)
         {
             for (int i = 0; i < GameObject.FindGameObjectsWithTag("Bow").Length; i++)
             {
@@ -37,7 +37,7 @@ public class Arrow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(skill1)
+        if(skill1 || PlayerManager.Instance.arrowType != 3)
         {
             FlightTimer = 0;
             dir.Set(target.transform.position.y - transform.position.x, target.transform.position.y - transform.position.y);
@@ -61,6 +61,10 @@ public class Arrow : MonoBehaviour {
         if (other.gameObject.tag == "Enemy")
         {
             other.gameObject.GetComponent<AI>().MinusHP(Damage);
+            if(PlayerManager.Instance.arrowType == 2)
+            {
+                other.gameObject.GetComponent<AI>().slow = true;
+            }
             Destroy(gameObject);
             var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
             clone.GetComponentInChildren<DamageNumbers>().dmg = Damage;

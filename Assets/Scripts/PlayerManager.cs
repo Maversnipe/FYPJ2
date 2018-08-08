@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
     public int totalSkillPoints;
     // Player level points
     public int levelPoints;
+    public int arrowType;
 
     public int m_dmg;
 
@@ -84,6 +85,7 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        arrowType = 0;
         timer = 0;
         invulnerable = false;
         unlimited = false;

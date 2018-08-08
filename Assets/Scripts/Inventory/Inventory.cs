@@ -118,6 +118,30 @@ public class Inventory : MonoBehaviour {
         return true;
     }
 
+    public void Remove(string _itemName, int _numToRemove)
+    {
+        // Iterate through the whole inventory
+        for (int i = 0; i < m_numSlots; ++i)
+        {
+            // Check if slot is empty
+            if (!m_slotList[i].GetComponent<Slot>().IsEmpty())
+            {   // If slot not empty
+                // Checks if both have same name
+                if (m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_itemName))
+                {   // If name matches
+                    // Loop through the number of times the item is to be removed
+                    for (int j = 0; j < _numToRemove; ++j)
+                    {
+                        // Remove item
+                        m_slotList[i].GetComponent<Slot>().m_item.Pop();
+
+                        if (m_slotList[i].GetComponent<Slot>().m_item.Count == 0)
+                            break;
+                    }
+                }
+            }
+        }
+    }
     // Remove item from inventory
     public void Remove()
     {

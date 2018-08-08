@@ -18,6 +18,9 @@ public class AI : MonoBehaviour {
     public float knockbackTime;
     public float knockbackDist;
     public bool stun;
+    public bool slow;
+    public float slowTimer;
+    public float slowSpeed;
     public float stunTimer;
 
     // Use this for initialization
@@ -30,10 +33,24 @@ public class AI : MonoBehaviour {
         target.Set(transform.position.x, transform.position.y);
         knockback = false;
         stun = false;
+        slow = false;
+        slowTimer = 5;
+        slowSpeed = 1;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        if(slow)
+        {
+            slowSpeed = 0.5f;
+            slowTimer -= Time.deltaTime;
+        }
+        if(slowTimer <= 0)
+        {
+            slow = false;
+            slowSpeed = 1.0f;
+            slowTimer = 5.f;
+        }
         shortestDist = 100000;
         dir.Set(0, 0);
         if(!knockback && !stun)
@@ -48,7 +65,7 @@ public class AI : MonoBehaviour {
                 }
             }
             dir.Set(target.x - transform.position.x, target.y - transform.position.y);
-            body.velocity = dir.normalized;
+            body.velocity = dir.normalized * slowSpeed;
         }
         else if(knockback)
         {
