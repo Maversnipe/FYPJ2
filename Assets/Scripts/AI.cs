@@ -49,7 +49,7 @@ public class AI : MonoBehaviour {
         {
             slow = false;
             slowSpeed = 1.0f;
-            slowTimer = 5.f;
+            slowTimer = 5f;
         }
         shortestDist = 100000;
         dir.Set(0, 0);
