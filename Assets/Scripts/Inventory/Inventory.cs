@@ -51,10 +51,7 @@ public class Inventory : MonoBehaviour {
 
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            Add(m_database.m_itemsList[1]);
-        }
+       
         
     }
 
@@ -129,5 +126,26 @@ public class Inventory : MonoBehaviour {
             return;
 
 
+    }
+
+    // Search for items in inventory
+    public Stack<Item> ItemSearch(string _itemName)
+    {
+        // Iterate through the whole inventory
+        for(int i = 0; i < m_numSlots; ++i)
+        {
+            // Check if slot is empty
+            if (!m_slotList[i].GetComponent<Slot>().IsEmpty())
+            {   // If slot not empty
+                // Checks if both have same name
+                if (m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_itemName))
+                {   // If name matches
+                    return m_slotList[i].GetComponent<Slot>().m_item;
+                }
+            }
+        }
+        Debug.Log("Hellllllloooooooooo");
+        // If doesn't exist
+        return null;
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - SwordBonusText
   - Shop
   - Bow
+  - Hotbar
   layers:
   - Default
   - TransparentFX
