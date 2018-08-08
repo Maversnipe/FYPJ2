@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour {
+public class PlayerManager : MonoBehaviour
+{
     // Player Current Level
     public int m_currentLevel;
+    // Player Max EXP
+    public float m_maxExp;
+    // Player Current EXP
+    public float m_currentExp;
     // Player Max Health
     public int m_maxHealth;
     // Player Current Health
@@ -22,6 +27,16 @@ public class PlayerManager : MonoBehaviour {
     public int totalSkillPoints;
     // Player level points
     public int levelPoints;
+
+    public int m_dmg;
+
+    public float m_attackSpeed;
+
+    //Health Regen
+    public float m_healthRegen;
+
+    //Mana Regen
+    public float m_ManaRegen;
 
     public List<int> levels;
 
@@ -45,6 +60,12 @@ public class PlayerManager : MonoBehaviour {
     // Player GO
     public GameObject m_player;
 
+    public bool invulnerable;
+
+    public bool unlimited;
+
+    public float timer;
+
     // Make this a Singleton
     private static PlayerManager _instance;
     public static PlayerManager Instance { get { return _instance; } }
@@ -61,47 +82,150 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
+        timer = 0;
+        invulnerable = false;
+        unlimited = false;
+           m_maxHealth = 100;
+        m_maxMana = 100;
+        m_maxExp = 100;
+        m_dmg = 10;
+        m_attackSpeed = 1;
+        m_healthRegen = 0.02f;
+        m_ManaRegen = 0.02f;
+        if (!PlayerPrefs.HasKey("Money"))
+            PlayerPrefs.GetInt("Money", 1000);
+        if (!PlayerPrefs.HasKey("HealthPoints"))
+            PlayerPrefs.GetInt("HealthPoints",0);
+        if (!PlayerPrefs.HasKey("ManaPoints"))
+            PlayerPrefs.GetInt("ManaPoints", 0);
+        if (!PlayerPrefs.HasKey("HealthRegenPoints"))
+            PlayerPrefs.GetInt("HealthRegenPoints", 0);
+        if (!PlayerPrefs.HasKey("ManaRegenPoints"))
+            PlayerPrefs.GetInt("ManaRegenPoints", 0);
+        if (!PlayerPrefs.HasKey("StrengthPoints"))
+            PlayerPrefs.GetInt("StrengthPoints", 0);
+        if (!PlayerPrefs.HasKey("AttackSpeedPoints"))
+            PlayerPrefs.GetInt("AttackSpeedPoints", 0);
+        if (!PlayerPrefs.HasKey("Skill1"))
+            PlayerPrefs.GetInt("Skill1", 0);
+        if (!PlayerPrefs.HasKey("Skill3"))
+            PlayerPrefs.GetInt("Skill3", 0);
+        if (!PlayerPrefs.HasKey("Skill2"))
+            PlayerPrefs.GetInt("Skill2", 0);
+        if (!PlayerPrefs.HasKey("Level"))
+            PlayerPrefs.GetInt("Level", 1);
+        if (!PlayerPrefs.HasKey("EXP"))
+            PlayerPrefs.GetFloat("EXP", 0);
         skills.Clear();
+        levels.Clear();
         // 1 = bow, 2 = sword;
-        for(int i = 0; i<3;i++)
+        skills.Add(PlayerPrefs.GetInt("Skill1"));
+        skills.Add(PlayerPrefs.GetInt("Skill2"));
+        skills.Add(PlayerPrefs.GetInt("Skill3"));
+        levels.Add(PlayerPrefs.GetInt("HealthPoints"));
+        levels.Add(PlayerPrefs.GetInt("ManaPoints"));
+        levels.Add(PlayerPrefs.GetInt("HealthRegenPoints"));
+        levels.Add(PlayerPrefs.GetInt("ManaRegenPoints"));
+        levels.Add(PlayerPrefs.GetInt("StrengthPoints"));
+        levels.Add(PlayerPrefs.GetInt("AttackSpeedPoints"));
+        m_currentLevel = PlayerPrefs.GetInt("Level");
+        totalSkillPoints = m_currentLevel / 3;
+        skillPoints = totalSkillPoints;
+        for (int i = 0; i < skills.Count; i++)
         {
-            skills.Add(0);
+            if (skills[i] != 0)
+            {
+                skillPoints--;
+            }
         }
-        for (int i = 0; i < 6; i++)
-        {
-            levels.Add(0);
-        }
-        skillPoints = 2;
-        totalSkillPoints = 2;
+        m_maxExp *= (1.5f * (m_currentLevel - 1));
+
+        m_maxHealth += (50 * levels[0]);
         m_currentHealth = m_maxHealth;
+
+        m_maxMana += (50 * levels[1]);
+        m_currentMana = m_maxMana;
+
+        m_dmg += (2 * levels[4]);
+        m_healthRegen += (0.02f * levels[2]);
+        m_ManaRegen += (0.02f * levels[3]);
+        m_attackSpeed += (0.2f * levels[5]);
         // Set Sword Damage Bonus to 0
         m_swordBonus = 0;
         // Set Bow Damage Bonus to 0
         m_bowBonus = 0;
         // Set Health Bonus to 0
         m_healthBonus = 0;
-        m_currentLevel = 1;
-        levelPoints = m_currentLevel * 6;
+        levelPoints = m_currentLevel * 6; 
+        for(int i=0;i<levels.Count; i++)
+        {
+            levelPoints -= levels[i];
+        }
         // Set all bonus text to null
         m_bowBonusText = null;
         m_swordBonusText = null;
         m_armourBonusText = null;
-
+        m_moneyAmount = PlayerPrefs.GetInt("Money");
         // Set the player
         m_player = GameObject.FindGameObjectWithTag("Player");
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-        if(m_currentHealth < 0)
+
+    // Update is called once per frame
+    void Update()
+    {
+        timer += Time.deltaTime;
+        if (m_currentHealth < 0)
         {
             //died
         }
         string hi = "Health Bonus: " + m_healthBonus.ToString();
         Debug.Log(hi);
-	}
+        if(timer > 1)
+        {
+            m_currentHealth += (int)(m_maxHealth * m_healthRegen);
+            m_currentMana += (int)(m_maxMana * m_ManaRegen);
+        }
+        if(m_currentExp >= m_maxExp)
+        {
+            m_currentLevel++;
+            levelPoints += 6;
+            m_currentExp -= m_maxExp;
+            m_maxExp *= 1.5f;
+            if (m_currentLevel == 3 || m_currentLevel == 6 || m_currentLevel == 9)
+            {
+                skillPoints++;
+                totalSkillPoints++;
+            }
+        }
+        PlayerPrefs.SetInt("Money", m_moneyAmount);
+
+            PlayerPrefs.SetInt("Money", m_moneyAmount);
+
+            PlayerPrefs.SetInt("HealthPoints", levels[0]);
+
+            PlayerPrefs.SetInt("ManaPoints", levels[1]);
+
+            PlayerPrefs.SetInt("HealthRegenPoints", levels[2]);
+
+            PlayerPrefs.SetInt("ManaRegenPoints", levels[3]);
+
+            PlayerPrefs.SetInt("StrengthPoints", levels[4]);
+
+            PlayerPrefs.SetInt("AttackSpeedPoints", levels[5]);
+
+            PlayerPrefs.SetInt("Skill1", skills[0]);
+
+            PlayerPrefs.SetInt("Skill3", skills[1]);
+
+            PlayerPrefs.SetInt("Skill2", skills[2]);
+
+            PlayerPrefs.SetInt("Level", m_currentLevel);
+
+            PlayerPrefs.SetFloat("EXP", m_currentExp);
+
+    }
 
     public void AddHP(int value)
     {
@@ -143,7 +267,7 @@ public class PlayerManager : MonoBehaviour {
                     // Set sword bonus
                     m_swordBonus = swordBonus;
                     string newBonusText = "Sword Damage Bonus: +" + m_swordBonus.ToString();
-                    if(m_swordBonusText == null)
+                    if (m_swordBonusText == null)
                     {
                         // Set Sword Bonus Text
                         m_swordBonusText = GameObject.FindGameObjectWithTag("SwordBonusText").GetComponent<Text>();
@@ -177,7 +301,7 @@ public class PlayerManager : MonoBehaviour {
                     // Set bow bonus
                     m_bowBonus = bowBonus;
                     string newBonusText = "Bow Damage Bonus: +" + m_bowBonus.ToString();
-                    if(m_bowBonusText == null)
+                    if (m_bowBonusText == null)
                     {
                         // Set Bow Bonus Text
                         m_bowBonusText = GameObject.FindGameObjectWithTag("BowBonusText").GetComponent<Text>();

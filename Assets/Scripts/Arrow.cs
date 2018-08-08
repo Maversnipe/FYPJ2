@@ -18,7 +18,7 @@ public class Arrow : MonoBehaviour {
         FlightTime = 10.5f;
         FlightTimer = 0f;
         moveSpeed = 10f;
-        Damage = 10;
+        Damage = PlayerManager.Instance.m_dmg;
         body = GetComponent<Rigidbody2D>();
         if(!skill1)
         {

@@ -23,6 +23,8 @@ public class AI : MonoBehaviour {
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody2D>();
+        maxHP += PlayerManager.Instance.m_currentLevel * 50;
+        AttackDmg += PlayerManager.Instance.m_currentLevel * 2;
         currentHP = maxHP;
         shortestDist = 100000;
         target.Set(transform.position.x, transform.position.y);
@@ -78,14 +80,20 @@ public class AI : MonoBehaviour {
         if(currentHP <= 0)
         {
             gameObject.SetActive(false);
+            PlayerManager.Instance.m_currentExp += 100 * 1.5f * PlayerManager.Instance.m_currentLevel;
+            PlayerManager.Instance.m_moneyAmount += 100;
         }
 	}
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.tag == "Player" && cooldownTimer <= 0)
         {
-            other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
-            cooldownTimer = cooldownTime;
+            if(!PlayerManager.Instance.invulnerable)
+            {
+                other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                cooldownTimer = cooldownTime;
+            }
+
         }
     }
     public void MinusHP(int value)

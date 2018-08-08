@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour {
         swordSkill1 = false;
         swordSkill2 = false;
         swordSkill3 = false;
-        mana = 1000;
     }
 	
 	// Update is called once per frame
@@ -95,26 +94,33 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(isMelee)
+            if(isMelee && PlayerManager.Instance.levels[0] == 0)
             {
-                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+                if(PlayerManager.Instance.m_currentMana >= 10)
                 {
-                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
-                    if (dist < 5)
+                    for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
                     {
-                        if (!GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback)
+                        float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
+                        if (dist < 5)
                         {
-                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback = true;
-                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackTime = 15;
-                            GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackDist = 10;
-                        }
+                            if (!GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback)
+                            {
+                                GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockback = true;
+                                GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackTime = 15;
+                                GameObject.FindGameObjectsWithTag("Enemy")[i].GetComponent<AI>().knockbackDist = 10;
+                            }
 
+                        }
                     }
+                    PlayerManager.Instance.m_currentMana -= 10;
                 }
+
             }
-            else
+            else if(!isMelee && PlayerManager.Instance.levels[0] == 1)
             {
-                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+                if (PlayerManager.Instance.m_currentMana >= 10)
+                {
+                    for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
                 {
                     float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Enemy")[i].transform.position, transform.position);
                     if (dist < 10)
@@ -123,12 +129,14 @@ public class PlayerController : MonoBehaviour {
 
                     }
                 }
+                    PlayerManager.Instance.m_currentMana -= 10;
+                }
             }
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (isMelee)
+            if (isMelee && PlayerManager.Instance.levels[1] == 2)
             {
                 bowSkill2 = false;
                 transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
@@ -142,7 +150,7 @@ public class PlayerController : MonoBehaviour {
                     swordSkill2 = false;
                 }
             }
-            else
+            else if(!isMelee && PlayerManager.Instance.levels[1] == 1)
             {
                 swordSkill2 = false;
                 transform.GetChild(1).gameObject.SetActive(false);
@@ -161,7 +169,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (isMelee)
+            if (isMelee && PlayerManager.Instance.levels[2] == 2)
             {
                 bowSkill3 = false;
                 if (!swordSkill3)
@@ -173,7 +181,7 @@ public class PlayerController : MonoBehaviour {
                     swordSkill3 = false;
                 }
             }
-            else
+            else if(!isMelee && PlayerManager.Instance.levels[2] == 1)
             {
                 swordSkill3 = false;
                 if (!bowSkill3)
@@ -386,8 +394,8 @@ public class PlayerController : MonoBehaviour {
         }
         if(bowSkill2)
         {
-            mana--;
-            if(mana <= 0)
+            PlayerManager.Instance.m_currentMana--;
+            if(PlayerManager.Instance.m_currentMana <= 0)
             {
                 bowSkill2 = false;
             }
@@ -398,8 +406,9 @@ public class PlayerController : MonoBehaviour {
         }
         if (swordSkill2)
         {
-            mana--;
-            if (mana <= 0)
+            PlayerManager.Instance.m_currentMana--;
+            PlayerManager.Instance.m_currentHealth --;
+            if (PlayerManager.Instance.m_currentMana <= 0)
             {
                 swordSkill2 = false;
             }
@@ -407,6 +416,22 @@ public class PlayerController : MonoBehaviour {
         else
         {
             transform.GetChild(1).gameObject.SetActive(false);
+        }
+        if(bowSkill3)
+        {
+            PlayerManager.Instance.unlimited = true;
+        }
+        else
+        {
+            PlayerManager.Instance.unlimited = false;
+        }
+        if (swordSkill3)
+        {
+            PlayerManager.Instance.invulnerable = true;
+        }
+        else
+        {
+            PlayerManager.Instance.invulnerable = false;
         }
         if (Input.GetMouseButtonDown(0) && attackTimer<=0 && !inventoryIsActive)
         {
