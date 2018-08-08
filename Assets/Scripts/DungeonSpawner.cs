@@ -13,7 +13,7 @@ public class DungeonSpawner : MonoBehaviour
 
     public int columns = 100;                                 
     public int rows = 100;                                    
-    public IntRange numRooms = new IntRange(15, 20);         
+    public IntRange numRooms = new IntRange(PlayerManager.Instance.m_currentLevel + 1, PlayerManager.Instance.m_currentLevel + 2);         
     public IntRange roomWidth = new IntRange(3, 10);         
     public IntRange roomHeight = new IntRange(3, 10);       
     public IntRange corridorLength = new IntRange(6, 10);   
@@ -261,5 +261,13 @@ public class DungeonSpawner : MonoBehaviour
 
         // Set the tile's parent to the board holder.
         tileInstance.transform.parent = tileHolder.transform;
+    }
+
+    private void Update()
+    {
+        if(GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+        {
+            //gameover
+        }
     }
 }
