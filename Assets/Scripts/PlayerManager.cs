@@ -28,7 +28,7 @@ public class PlayerManager : MonoBehaviour
     // Player level points
     public int levelPoints;
     public int arrowType;
-
+    public bool allSkills;
     public int m_dmg;
 
     public float m_attackSpeed;
@@ -87,6 +87,7 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        allSkills = false;
         arrowType = 0;
         timer = 0;
         invulnerable = false;

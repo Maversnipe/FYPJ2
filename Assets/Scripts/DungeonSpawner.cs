@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonSpawner : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class DungeonSpawner : MonoBehaviour
     public GameObject[] outerWallTiles;                       
     public GameObject player;
     public GameObject slime;
+    public Text objectiveText;
 
     private TileType[][] tiles;                             
     private Room[] rooms;                                   
@@ -260,9 +262,22 @@ public class DungeonSpawner : MonoBehaviour
         tileInstance.transform.parent = tileHolder.transform;
     }
 
-    private void Update()
+    void Update()
     {
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+        objectiveText.text = " Number of enemies left: " + GameObject.FindGameObjectsWithTag("Enemy").Length;
+        if(PlayerManager.Instance.invulnerable)
+        {
+            objectiveText.text += "\n INVULNERABLE"; 
+        }
+        if (PlayerManager.Instance.unlimited)
+        {
+            objectiveText.text += "\n UNLIMITED";
+        }
+        if (PlayerManager.Instance.allSkills)
+        {
+            objectiveText.text += "\n ALL SKILLS ACTIVATED";
+        }
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
         {
             //gameover
         }

@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(isMelee && PlayerManager.Instance.levels[0] == 0)
+            if(isMelee && (PlayerManager.Instance.levels[0] == 0 || PlayerManager.Instance.allSkills))
             {
                 if(PlayerManager.Instance.m_currentMana >= 10)
                 {
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour {
                 }
 
             }
-            else if(!isMelee && PlayerManager.Instance.levels[0] == 1)
+            else if(!isMelee && (PlayerManager.Instance.levels[0] == 1 || PlayerManager.Instance.allSkills))
             {
                 if (PlayerManager.Instance.m_currentMana >= 10)
                 {
@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (isMelee && PlayerManager.Instance.levels[1] == 2)
+            if (isMelee && (PlayerManager.Instance.levels[1] == 2 || PlayerManager.Instance.allSkills))
             {
                 bowSkill2 = false;
                 transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour {
                     swordSkill2 = false;
                 }
             }
-            else if(!isMelee && PlayerManager.Instance.levels[1] == 1)
+            else if(!isMelee && (PlayerManager.Instance.levels[1] == 1 || PlayerManager.Instance.allSkills))
             {
                 swordSkill2 = false;
                 transform.GetChild(1).gameObject.SetActive(false);
@@ -259,7 +259,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (isMelee && PlayerManager.Instance.levels[2] == 2)
+            if (isMelee && (PlayerManager.Instance.levels[2] == 2 || PlayerManager.Instance.allSkills))
             {
                 bowSkill3 = false;
                 if (!swordSkill3)
@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour {
                     swordSkill3 = false;
                 }
             }
-            else if(!isMelee && PlayerManager.Instance.levels[2] == 1)
+            else if(!isMelee && (PlayerManager.Instance.levels[2] == 1 || PlayerManager.Instance.allSkills))
             {
                 swordSkill3 = false;
                 if (!bowSkill3)
@@ -284,6 +284,17 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            if (PlayerManager.Instance.allSkills)
+            {
+                PlayerManager.Instance.allSkills = false;
+            }
+            else
+            {
+                PlayerManager.Instance.allSkills = true;
+            }
         }
         // For double tap dash
         if (Input.GetKeyDown(KeyCode.W))
@@ -534,6 +545,7 @@ public class PlayerController : MonoBehaviour {
         if(bowSkill3)
         {
             PlayerManager.Instance.unlimited = true;
+            PlayerManager.Instance.m_currentMana--;
         }
         else
         {
@@ -542,6 +554,7 @@ public class PlayerController : MonoBehaviour {
         if (swordSkill3)
         {
             PlayerManager.Instance.invulnerable = true;
+            PlayerManager.Instance.m_currentMana--;
         }
         else
         {
