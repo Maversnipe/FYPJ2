@@ -63,6 +63,8 @@ public class PlayerManager : MonoBehaviour
 
     public bool invulnerable;
 
+    public bool pause;
+
     public bool unlimited;
 
     public float timer;
@@ -87,6 +89,7 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        pause = false;
         allSkills = false;
         arrowType = 0;
         timer = 0;

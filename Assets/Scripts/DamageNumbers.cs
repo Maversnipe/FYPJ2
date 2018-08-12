@@ -17,11 +17,14 @@ public class DamageNumbers : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //dmgText.text = "" + dmg;
-        transform.position = new Vector2(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime));
-        if(timer <= 0)
+        if (!PlayerManager.Instance.pause)
         {
-            Destroy(transform.parent.gameObject);
+            transform.position = new Vector2(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime));
+            if (timer <= 0)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            timer -= Time.deltaTime;
         }
-        timer -= Time.deltaTime;
     }
 }
