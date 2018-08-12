@@ -12,8 +12,8 @@ public class DungeonSpawner : MonoBehaviour
 
 
     public int columns = 100;                                 
-    public int rows = 100;                                    
-    public IntRange numRooms = new IntRange(PlayerManager.Instance.m_currentLevel + 1, PlayerManager.Instance.m_currentLevel + 2);         
+    public int rows = 100;
+    public IntRange numRooms;         
     public IntRange roomWidth = new IntRange(3, 10);         
     public IntRange roomHeight = new IntRange(3, 10);       
     public IntRange corridorLength = new IntRange(6, 10);   
@@ -31,6 +31,8 @@ public class DungeonSpawner : MonoBehaviour
 
     private void Start()
     {
+
+        numRooms = new IntRange(PlayerManager.Instance.m_currentLevel + 1, PlayerManager.Instance.m_currentLevel + 2);
         // Create the board holder.
         tileHolder = new GameObject("tileHolder");
 
@@ -77,6 +79,10 @@ public class DungeonSpawner : MonoBehaviour
 
 
         corridors[0].SetupCorridor(rooms[0], corridorLength, roomWidth, roomHeight, columns, rows, true);
+        Vector3 playerPos = new Vector3(rooms[0].xPos, rooms[0].yPos, 0);
+
+
+        GameObject.FindGameObjectsWithTag("Player")[0].transform.position = playerPos;
 
         for (int i = 1; i < rooms.Length; i++)
         {
@@ -96,20 +102,12 @@ public class DungeonSpawner : MonoBehaviour
                 corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
             }
 
-            if (i == 1)
-            {
-                Vector3 playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
-                Instantiate(player, playerPos, Quaternion.identity);
 
-            }
-            else
-            {
-                Vector3 playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
+                playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
 
                 Instantiate(slime, playerPos, Quaternion.identity);
                 Instantiate(slime, playerPos, Quaternion.identity);
                 Instantiate(slime, playerPos, Quaternion.identity);
-            }
         }
 
     }

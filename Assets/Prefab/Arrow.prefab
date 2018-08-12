@@ -103,9 +103,11 @@ MonoBehaviour:
   FlightTime: 0
   FlightTimer: 0
   moveSpeed: 0
+  skill1: 0
   Damage: 0
   damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
     type: 2}
+  target: {fileID: 0}
 --- !u!212 &212043092575163956
 SpriteRenderer:
   m_ObjectHideFlags: 1

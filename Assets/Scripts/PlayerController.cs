@@ -548,31 +548,35 @@ public class PlayerController : MonoBehaviour {
         anim.SetFloat("LastMoveY", dir.y);
         anim.SetBool("isMoving", isMoving);
 
-        // Check if shop is active
-        if (ShopMenu.Instance.MenuIsActive())
+        if(ShopMenu.Instance)
         {
-            // If player presses E, interact
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // Make shop inactive
-                ShopMenu.Instance.transform.GetChild(0).gameObject.SetActive(false);
-                // Set Shop Menu as inative
-                ShopMenu.Instance.SetMenuActive(false);
-            }
-        }
-        else
-        {
-            // Check if there are interactables
-            if (PlayerManager.Instance.m_interactable != null)
+            // Check if shop is active
+            if (ShopMenu.Instance.MenuIsActive())
             {
                 // If player presses E, interact
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    // Interact
-                    PlayerManager.Instance.m_interactable.Interact();
+                    // Make shop inactive
+                    ShopMenu.Instance.transform.GetChild(0).gameObject.SetActive(false);
+                    // Set Shop Menu as inative
+                    ShopMenu.Instance.SetMenuActive(false);
+                }
+            }
+            else
+            {
+                // Check if there are interactables
+                if (PlayerManager.Instance.m_interactable != null)
+                {
+                    // If player presses E, interact
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        // Interact
+                        PlayerManager.Instance.m_interactable.Interact();
+                    }
                 }
             }
         }
+     
         
     }
 }

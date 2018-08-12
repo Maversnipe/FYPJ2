@@ -67,6 +67,7 @@ public class PlayerManager : MonoBehaviour
 
     public float timer;
 
+    int hello = 0;
     // Make this a Singleton
     private static PlayerManager _instance;
     public static PlayerManager Instance { get { return _instance; } }
@@ -79,6 +80,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
             _instance = this;
+            Start();
         }
     }
 
@@ -142,7 +144,8 @@ public class PlayerManager : MonoBehaviour
                 skillPoints--;
             }
         }
-        m_maxExp *= (1.5f * (m_currentLevel - 1));
+        m_currentExp = PlayerPrefs.GetFloat("EXP");
+        m_maxExp *= (1.5f * (m_currentLevel));
 
         m_maxHealth += (50 * levels[0]);
         m_currentHealth = m_maxHealth;
@@ -184,10 +187,26 @@ public class PlayerManager : MonoBehaviour
         }
         string hi = "Health Bonus: " + m_healthBonus.ToString();
         Debug.Log(hi);
-        if(timer > 1)
+        if(timer > 5)
         {
-            m_currentHealth += (int)(m_maxHealth * m_healthRegen);
-            m_currentMana += (int)(m_maxMana * m_ManaRegen);
+            if(m_currentHealth < m_maxHealth)
+            {
+                m_currentHealth += (int)(m_maxHealth * m_healthRegen);
+                if(m_currentHealth > m_maxHealth)
+                {
+                    m_currentHealth = m_maxHealth;
+                }
+            }
+
+            if (m_currentMana < m_maxMana)
+            {
+                m_currentMana += (int)(m_maxMana * m_ManaRegen);
+                if (m_currentMana > m_maxMana)
+                {
+                    m_currentMana = m_maxMana;
+                }
+            }
+            timer = 0;
         }
         if(m_currentExp >= m_maxExp)
         {

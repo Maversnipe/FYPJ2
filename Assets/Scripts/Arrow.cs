@@ -37,7 +37,7 @@ public class Arrow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(skill1 || PlayerManager.Instance.arrowType != 3)
+        if(skill1 || PlayerManager.Instance.arrowType == 3)
         {
             FlightTimer = 0;
             dir.Set(target.transform.position.y - transform.position.x, target.transform.position.y - transform.position.y);

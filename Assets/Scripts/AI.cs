@@ -10,7 +10,7 @@ public class AI : MonoBehaviour {
     public Vector2 dir;
     public float shortestDist;
     public float cooldownTime;
-    private float cooldownTimer;
+    public float cooldownTimer;
     public int AttackDmg;
     public int currentHP;
     public int maxHP;
@@ -27,7 +27,7 @@ public class AI : MonoBehaviour {
     void Start () {
         body = GetComponent<Rigidbody2D>();
         maxHP += PlayerManager.Instance.m_currentLevel * 50;
-        AttackDmg += PlayerManager.Instance.m_currentLevel * 2;
+        AttackDmg += PlayerManager.Instance.m_currentLevel * 10;
         currentHP = maxHP;
         shortestDist = 100000;
         target.Set(transform.position.x, transform.position.y);
@@ -36,6 +36,7 @@ public class AI : MonoBehaviour {
         slow = false;
         slowTimer = 5;
         slowSpeed = 1;
+        cooldownTime = 1.5f;
     }
 	
 	// Update is called once per frame
@@ -90,14 +91,14 @@ public class AI : MonoBehaviour {
         }
         
 
-        if (cooldownTimer > 0)
+        if (cooldownTimer > -1)
         {
             cooldownTimer -= Time.deltaTime;
         }
         if(currentHP <= 0)
         {
             gameObject.SetActive(false);
-            PlayerManager.Instance.m_currentExp += 100 * 1.5f * PlayerManager.Instance.m_currentLevel;
+            PlayerManager.Instance.m_currentExp += 10 * 1.5f * PlayerManager.Instance.m_currentLevel;
             PlayerManager.Instance.m_moneyAmount += 100;
         }
 	}
@@ -106,6 +107,18 @@ public class AI : MonoBehaviour {
         if(other.gameObject.tag == "Player" && cooldownTimer <= 0)
         {
             if(!PlayerManager.Instance.invulnerable)
+            {
+                other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                cooldownTimer = cooldownTime;
+            }
+
+        }
+    }
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player" && cooldownTimer <= 0)
+        {
+            if (!PlayerManager.Instance.invulnerable)
             {
                 other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
                 cooldownTimer = cooldownTime;
