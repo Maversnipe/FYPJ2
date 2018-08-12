@@ -67,7 +67,7 @@ public class Arrow : MonoBehaviour {
             }
             Destroy(gameObject);
             var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
-            clone.GetComponentInChildren<DamageNumbers>().dmg = Damage;
+            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + Damage;
         }
         if (other.gameObject.tag == "Wall")
         {

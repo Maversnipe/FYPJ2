@@ -594,6 +594,8 @@ MonoBehaviour:
   attackTime: 0.2
   count: 1
   mouseClick: {x: 0, y: 0}
+  damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
+    type: 2}
 --- !u!114 &114367383892033286
 MonoBehaviour:
   m_ObjectHideFlags: 1

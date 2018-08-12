@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour {
     private float attackTimer;
 	public int count = 1000;
     public Vector2 mouseClick;
+    public GameObject damageCounter;
+    public bool skillTree;
+    public bool levelTree;
     public class DoubleTap
     {
         public KeyCode key;
@@ -41,6 +44,8 @@ public class PlayerController : MonoBehaviour {
     public List<DoubleTap> doubleTap = new List<DoubleTap>();
 	// Use this for initialization
 	void Start () {
+        skillTree = false;
+        levelTree = false;
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         isMelee = false;
@@ -57,6 +62,10 @@ public class PlayerController : MonoBehaviour {
         swordSkill1 = false;
         swordSkill2 = false;
         swordSkill3 = false;
+        GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
+        GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
+        GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
+        GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
     }
 	
 	// Update is called once per frame
@@ -106,6 +115,51 @@ public class PlayerController : MonoBehaviour {
             PlayerMenu.Instance.SetMenuActive(!PlayerMenu.Instance.MenuIsActive());
             // Set the menu object to active
             GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
+            if(PlayerMenu.Instance.MenuIsActive())
+            {
+                skillTree = false;
+                levelTree = false;
+                GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
+                GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
+                GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
+                GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (skillTree)
+            {
+                skillTree = false;
+            }
+            else
+            {
+                skillTree = true;
+                levelTree = false;
+                PlayerMenu.Instance.SetMenuActive(false);
+                GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
+                GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
+                GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
+            }
+            GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
+            GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (levelTree)
+            {
+                levelTree = false;
+            }
+            else
+            {
+                levelTree = true;
+                skillTree = false;
+                PlayerMenu.Instance.SetMenuActive(false);
+                GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
+                GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
+                GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
+            }
+            GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
+            GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -127,6 +181,9 @@ public class PlayerController : MonoBehaviour {
 
                         }
                     }
+                    var clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+                    clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "KNOCKBACK";
+
                     PlayerManager.Instance.m_currentMana -= 10;
 
 
@@ -244,6 +301,7 @@ public class PlayerController : MonoBehaviour {
                             dash = true;
                             dashTime = dashTimeSet;
                             dashSpeedUp = dashTime;
+                            PlayerManager.Instance.m_currentMana-= 10;
                         }
                         doubleTap[i].time = 0;
                     }
@@ -274,6 +332,7 @@ public class PlayerController : MonoBehaviour {
                             dash = true;
                             dashTime = dashTimeSet;
                             dashSpeedLeft = dashSpeed;
+                            PlayerManager.Instance.m_currentMana -= 10;
                         }
                         doubleTap[i].time = 0;
                     }
@@ -304,6 +363,7 @@ public class PlayerController : MonoBehaviour {
                             dash = true;
                             dashTime = dashTimeSet;
                             dashSpeedDown =dashSpeed;
+                            PlayerManager.Instance.m_currentMana -= 10;
                         }
                         doubleTap[i].time = 0;
                     }
@@ -334,6 +394,7 @@ public class PlayerController : MonoBehaviour {
                             dash = true;
                             dashTime = dashTimeSet;
                             dashSpeedRight = dashSpeed;
+                            PlayerManager.Instance.m_currentMana -= 10;
                         }
                         doubleTap[i].time = 0;
                     }

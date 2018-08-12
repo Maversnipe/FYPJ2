@@ -25,7 +25,7 @@ public class LaserBowSkill : MonoBehaviour {
         {
             other.gameObject.GetComponent<AI>().MinusHP(PlayerManager.Instance.m_dmg);
             var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
-            clone.GetComponentInChildren<DamageNumbers>().dmg = PlayerManager.Instance.m_dmg;
+            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg;
         }
     }
 }

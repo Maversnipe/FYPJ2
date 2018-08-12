@@ -22,6 +22,7 @@ public class AI : MonoBehaviour {
     public float slowTimer;
     public float slowSpeed;
     public float stunTimer;
+    public GameObject damageCounter;
 
     // Use this for initialization
     void Start () {
@@ -100,6 +101,12 @@ public class AI : MonoBehaviour {
             gameObject.SetActive(false);
             PlayerManager.Instance.m_currentExp += 10 * 1.5f * PlayerManager.Instance.m_currentLevel;
             PlayerManager.Instance.m_moneyAmount += 100;
+            var clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg + "\n" + "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp" + "\n" + "+" + 100 + "coins";
+            //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+            //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp";
+            //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+            //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + 100 + "coins";
         }
 	}
     void OnCollisionEnter2D(Collision2D other)

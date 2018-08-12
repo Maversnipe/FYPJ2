@@ -16,7 +16,7 @@ public class DamageNumbers : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        dmgText.text = "" + dmg;
+        //dmgText.text = "" + dmg;
         transform.position = new Vector2(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime));
         if(timer <= 0)
         {

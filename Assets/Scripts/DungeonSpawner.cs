@@ -107,7 +107,6 @@ public class DungeonSpawner : MonoBehaviour
 
                 Instantiate(slime, playerPos, Quaternion.identity);
                 Instantiate(slime, playerPos, Quaternion.identity);
-                Instantiate(slime, playerPos, Quaternion.identity);
         }
 
     }

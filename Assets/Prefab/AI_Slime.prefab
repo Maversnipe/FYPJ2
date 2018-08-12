@@ -93,7 +93,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1
 --- !u!114 &114498650511578684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -122,6 +122,8 @@ MonoBehaviour:
   slowTimer: 0
   slowSpeed: 0
   stunTimer: 0
+  damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
+    type: 2}
 --- !u!212 &212385287542516968
 SpriteRenderer:
   m_ObjectHideFlags: 1
