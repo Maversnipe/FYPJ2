@@ -18,6 +18,7 @@ public class PlayerMenu : MonoBehaviour {
         {
             _instance = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     // Info box image

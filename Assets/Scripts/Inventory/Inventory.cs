@@ -16,6 +16,7 @@ public class Inventory : MonoBehaviour {
         {
             _instance = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     // Num Of Slots

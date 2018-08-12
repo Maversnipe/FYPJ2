@@ -17,6 +17,7 @@ public class Hotbar : MonoBehaviour {
         {
             _instance = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     // Item Database

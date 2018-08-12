@@ -16,6 +16,11 @@ public class HotbarSlot : MonoBehaviour {
     // Check if pointer is within slot
     private bool m_containsPoint;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     // Use this for initialization
     void Start ()
     {

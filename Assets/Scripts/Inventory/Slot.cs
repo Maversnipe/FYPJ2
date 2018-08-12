@@ -28,6 +28,11 @@ public class Slot : MonoBehaviour {
         Armour_Rune,
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     void Start()
     {
         // Set the slot to empty
