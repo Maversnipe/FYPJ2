@@ -14,7 +14,6 @@ public class LevelTree : MonoBehaviour {
     {
         // Set menu to not active
         m_menuIsActive = false;
-        gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame

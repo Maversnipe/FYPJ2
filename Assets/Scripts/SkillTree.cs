@@ -18,7 +18,6 @@ public class SkillTree : MonoBehaviour {
         m_menuIsActive = false;
         TotalSkillpoint = PlayerManager.Instance.totalSkillPoints;
         unspent = PlayerManager.Instance.skillPoints;
-        gameObject.SetActive(false);
     }
 	
 	// Update is called once per frame
