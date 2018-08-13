@@ -43,7 +43,9 @@ public class HotbarSlot : MonoBehaviour {
         }
 
         // Checks if it exists in inventory
-        Stack<Item> itemStack = Inventory.Instance.ItemSearch(m_hotbarItem.m_itemName);
+        Stack<Item> itemStack = null;
+        itemStack = Inventory.Instance.ItemSearch(m_hotbarItem.m_itemName);
+        Debug.Log(Inventory.Instance);
         if (itemStack != null)
         {
             m_countText.text = itemStack.Count.ToString();

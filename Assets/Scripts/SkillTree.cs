@@ -10,9 +10,15 @@ public class SkillTree : MonoBehaviour {
     private int TotalSkillpoint;
     private int unspent;
     public Text points;
-	void Start () {
+    // Check if player menu is active
+    private bool m_menuIsActive;
+    void Start ()
+    {
+        // Set menu to not active
+        m_menuIsActive = false;
         TotalSkillpoint = PlayerManager.Instance.totalSkillPoints;
         unspent = PlayerManager.Instance.skillPoints;
+        gameObject.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -51,4 +57,16 @@ public class SkillTree : MonoBehaviour {
                 }
         }
 	}
+
+    // Getter for the menu is active
+    public bool MenuIsActive()
+    {
+        return m_menuIsActive;
+    }
+
+    // Setter for the menu is active
+    public void SetMenuActive(bool _isActive)
+    {
+        m_menuIsActive = _isActive;
+    }
 }

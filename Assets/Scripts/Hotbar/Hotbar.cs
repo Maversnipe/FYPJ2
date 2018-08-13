@@ -95,6 +95,7 @@ public class Hotbar : MonoBehaviour {
         transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
         HotbarParent.Instance.SetCurrSlotID(0);
 
+
         // Second slot (Slow Arrow)
         transform.GetChild(1).GetComponent<HotbarSlot>().AddItem(m_database.m_itemsList[(int)ItemDatabase.TheItem.Slow_Arrow]);
         transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
