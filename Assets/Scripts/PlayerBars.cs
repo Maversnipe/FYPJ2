@@ -17,15 +17,17 @@ public class PlayerBars : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        Health.maxValue = PlayerManager.Instance.m_maxHealth;
-        Health.value = PlayerManager.Instance.m_currentHealth;
-        healthText.text = "" + Health.value + " / " + Health.maxValue;
-        Mana.maxValue = PlayerManager.Instance.m_maxMana;
-        Mana.value = PlayerManager.Instance.m_currentMana;
-        manaText.text = "" + Mana.value + " / " + Mana.maxValue;
-        Exp.maxValue = PlayerManager.Instance.m_maxExp;
-        Exp.value = PlayerManager.Instance.m_currentExp;
-        expText.text = "" + Exp.value + " / " + Exp.maxValue;
+        if (!PlayerManager.Instance.pause)
+        {
+            Health.maxValue = PlayerManager.Instance.m_maxHealth;
+            Health.value = PlayerManager.Instance.m_currentHealth;
+            healthText.text = "" + Health.value + " / " + Health.maxValue;
+            Mana.maxValue = PlayerManager.Instance.m_maxMana;
+            Mana.value = PlayerManager.Instance.m_currentMana;
+            manaText.text = "" + Mana.value + " / " + Mana.maxValue;
+            Exp.maxValue = PlayerManager.Instance.m_maxExp;
+            Exp.value = PlayerManager.Instance.m_currentExp;
+            expText.text = "" + Exp.value + " / " + Exp.maxValue;
+        }
     }
 }

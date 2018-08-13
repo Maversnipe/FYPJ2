@@ -42,95 +42,104 @@ public class AI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(slow)
+        if (!PlayerManager.Instance.pause)
         {
-            slowSpeed = 0.5f;
-            slowTimer -= Time.deltaTime;
-        }
-        if(slowTimer <= 0)
-        {
-            slow = false;
-            slowSpeed = 1.0f;
-            slowTimer = 5f;
-        }
-        shortestDist = 100000;
-        dir.Set(0, 0);
-        if(!knockback && !stun)
-        {
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
+            if (slow)
             {
-                float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
-                if (dist < 5 && dist > 0 && dist < shortestDist)
-                {
-                    shortestDist = dist;
-                    target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y);
-                }
+                slowSpeed = 0.5f;
+                slowTimer -= Time.deltaTime;
             }
-            dir.Set(target.x - transform.position.x, target.y - transform.position.y);
-            body.velocity = dir.normalized * slowSpeed;
-        }
-        else if(knockback)
-        {
-            dir.Set(transform.position.x - target.x, transform.position.y - target.y);
-            body.velocity = dir.normalized * knockbackDist;
-            knockbackTime--;
-        }
-        else if(stun)
-        {
-            body.velocity.Set(0, 0);
-            stunTimer -= Time.deltaTime;
-        }
-        if(knockbackTime <= 0 && knockback)
-        {
-            knockback = false;
-            stun = true;
-            stunTimer = 0.5f;
-        }
-        if(stunTimer <= 0)
-        {
-            stun = false;
-        }
-        
+            if (slowTimer <= 0)
+            {
+                slow = false;
+                slowSpeed = 1.0f;
+                slowTimer = 5f;
+            }
+            shortestDist = 100000;
+            dir.Set(0, 0);
+            if (!knockback && !stun)
+            {
+                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
+                {
+                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
+                    if (dist < 5 && dist > 0 && dist < shortestDist)
+                    {
+                        shortestDist = dist;
+                        target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y);
+                    }
+                }
+                dir.Set(target.x - transform.position.x, target.y - transform.position.y);
+                body.velocity = dir.normalized * slowSpeed;
+            }
+            else if (knockback)
+            {
+                dir.Set(transform.position.x - target.x, transform.position.y - target.y);
+                body.velocity = dir.normalized * knockbackDist;
+                knockbackTime--;
+            }
+            else if (stun)
+            {
+                body.velocity.Set(0, 0);
+                stunTimer -= Time.deltaTime;
+            }
+            if (knockbackTime <= 0 && knockback)
+            {
+                knockback = false;
+                stun = true;
+                stunTimer = 0.5f;
+            }
+            if (stunTimer <= 0)
+            {
+                stun = false;
+            }
 
-        if (cooldownTimer > -1)
-        {
-            cooldownTimer -= Time.deltaTime;
-        }
-        if(currentHP <= 0)
-        {
-            gameObject.SetActive(false);
-            PlayerManager.Instance.m_currentExp += 10 * 1.5f * PlayerManager.Instance.m_currentLevel;
-            PlayerManager.Instance.m_moneyAmount += 100;
-            var clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
-            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg + "\n" + "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp" + "\n" + "+" + 100 + "coins";
-            //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
-            //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp";
-            //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
-            //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + 100 + "coins";
+
+            if (cooldownTimer > -1)
+            {
+                cooldownTimer -= Time.deltaTime;
+            }
+            if (currentHP <= 0)
+            {
+                gameObject.SetActive(false);
+                PlayerManager.Instance.m_currentExp += 10 * 1.5f * PlayerManager.Instance.m_currentLevel;
+                PlayerManager.Instance.m_moneyAmount += 100;
+                var clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+                clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg + "\n" + "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp" + "\n" + "+" + 100 + "coins";
+                //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+                //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp";
+                //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
+                //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + 100 + "coins";
+            }
         }
 	}
     void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.tag == "Player" && cooldownTimer <= 0)
+        if (!PlayerManager.Instance.pause)
         {
-            if(!PlayerManager.Instance.invulnerable)
+            if (other.gameObject.tag == "Player" && cooldownTimer <= 0)
             {
-                other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
-                cooldownTimer = cooldownTime;
-            }
+                if (!PlayerManager.Instance.invulnerable)
+                {
+                    other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                    cooldownTimer = cooldownTime;
+                }
 
+            }
         }
     }
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player" && cooldownTimer <= 0)
+        if (!PlayerManager.Instance.pause)
         {
-            if (!PlayerManager.Instance.invulnerable)
+            if (other.gameObject.tag == "Player" && cooldownTimer <= 0)
             {
-                other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
-                cooldownTimer = cooldownTime;
-            }
+                if (!PlayerManager.Instance.invulnerable)
+                {
+                    other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                    cooldownTimer = cooldownTime;
+                }
 
+            }
         }
     }
     public void MinusHP(int value)

@@ -264,22 +264,25 @@ public class DungeonSpawner : MonoBehaviour
 
     void Update()
     {
-        objectiveText.text = " Number of enemies left: " + GameObject.FindGameObjectsWithTag("Enemy").Length;
-        if(PlayerManager.Instance.invulnerable)
+        if (!PlayerManager.Instance.pause)
         {
-            objectiveText.text += "\n INVULNERABLE"; 
-        }
-        if (PlayerManager.Instance.unlimited)
-        {
-            objectiveText.text += "\n UNLIMITED";
-        }
-        if (PlayerManager.Instance.allSkills)
-        {
-            objectiveText.text += "\n ALL SKILLS ACTIVATED";
-        }
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
-        {
-            //gameover
+            objectiveText.text = " Number of enemies left: " + GameObject.FindGameObjectsWithTag("Enemy").Length;
+            if (PlayerManager.Instance.invulnerable)
+            {
+                objectiveText.text += "\n INVULNERABLE";
+            }
+            if (PlayerManager.Instance.unlimited)
+            {
+                objectiveText.text += "\n UNLIMITED";
+            }
+            if (PlayerManager.Instance.allSkills)
+            {
+                objectiveText.text += "\n ALL SKILLS ACTIVATED";
+            }
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+            {
+                //gameover
+            }
         }
     }
 }

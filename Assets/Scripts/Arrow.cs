@@ -36,42 +36,47 @@ public class Arrow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        if(skill1 || PlayerManager.Instance.arrowType == 3)
+        if (!PlayerManager.Instance.pause)
         {
-            FlightTimer = 0;
-            dir.Set(target.transform.position.y - transform.position.x, target.transform.position.y - transform.position.y);
-            dir.Normalize();
-            transform.rotation = Quaternion.Euler(0f, 0f, (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg) - 45);
+            if (skill1 || PlayerManager.Instance.arrowType == 3)
+            {
+                FlightTimer = 0;
+                dir.Set(target.transform.position.y - transform.position.x, target.transform.position.y - transform.position.y);
+                dir.Normalize();
+                transform.rotation = Quaternion.Euler(0f, 0f, (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg) - 45);
+            }
+            if (FlightTimer <= FlightTime || transform.childCount <= 0)
+            {
+                body.velocity = dir * moveSpeed;
+                // transform.position += new Vector3(dir.x, dir.y, 0) * Time.deltaTime * moveSpeed;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            FlightTimer += Time.deltaTime;
         }
-		if(FlightTimer <= FlightTime || transform.childCount <=0)
-        {
-            body.velocity = dir * moveSpeed;
-           // transform.position += new Vector3(dir.x, dir.y, 0) * Time.deltaTime * moveSpeed;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        FlightTimer += Time.deltaTime;
 
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (!PlayerManager.Instance.pause)
         {
-            other.gameObject.GetComponent<AI>().MinusHP(Damage);
-            if(PlayerManager.Instance.arrowType == 2)
+            if (other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<AI>().slow = true;
+                other.gameObject.GetComponent<AI>().MinusHP(Damage);
+                if (PlayerManager.Instance.arrowType == 2)
+                {
+                    other.gameObject.GetComponent<AI>().slow = true;
+                }
+                Destroy(gameObject);
+                var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+                clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + Damage;
             }
-            Destroy(gameObject);
-            var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
-            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + Damage;
-        }
-        if (other.gameObject.tag == "Wall")
-        {
-            Destroy(gameObject);
+            if (other.gameObject.tag == "Wall")
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
