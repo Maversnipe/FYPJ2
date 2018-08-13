@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject damageCounter;
     public bool skillTree;
     public bool levelTree;
+    bool menuOpen;
     public class DoubleTap
     {
         public KeyCode key;
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour {
         swordSkill1 = false;
         swordSkill2 = false;
         swordSkill3 = false;
+        menuOpen = false;
         GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
         GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
         GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
@@ -85,12 +87,12 @@ public class PlayerController : MonoBehaviour {
         if (PlayerManager.Instance.pause)
         {
             GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(true);
-            GameObject.Find("PlayerUI").transform.GetChild(0).gameObject.SetActive(false);
+            //GameObject.Find("Player UI").transform.GetChild(0).gameObject.SetActive(false);
         }
         else
         {
             GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(false);
-            GameObject.Find("PlayerUI").transform.GetChild(0).gameObject.SetActive(true);
+            //GameObject.Find("Player UI").transform.GetChild(0).gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 if (Hotbar.Instance.GetInstanceID() == 0)
@@ -150,6 +152,7 @@ public class PlayerController : MonoBehaviour {
                 if (skillTree)
                 {
                     skillTree = false;
+                    menuOpen = false;
                 }
                 else
                 {
@@ -159,6 +162,7 @@ public class PlayerController : MonoBehaviour {
                     GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
                     GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
                     GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
+                    menuOpen = true;
                 }
                 GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
                 GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
@@ -168,6 +172,7 @@ public class PlayerController : MonoBehaviour {
                 if (levelTree)
                 {
                     levelTree = false;
+                    menuOpen = false;
                 }
                 else
                 {
@@ -177,6 +182,7 @@ public class PlayerController : MonoBehaviour {
                     GameObject.FindGameObjectWithTag("Inventory").transform.GetChild(0).gameObject.SetActive(PlayerMenu.Instance.MenuIsActive());
                     GameObject.FindGameObjectWithTag("Skill").transform.GetChild(0).gameObject.SetActive(skillTree);
                     GameObject.FindGameObjectWithTag("Skill").transform.GetChild(1).gameObject.SetActive(skillTree);
+                    menuOpen = true;
                 }
                 GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject.SetActive(levelTree);
                 GameObject.FindGameObjectWithTag("Level").transform.GetChild(1).gameObject.SetActive(levelTree);
@@ -500,7 +506,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
-            if (Input.GetMouseButtonDown(1) && !inventoryIsActive)
+            if (Input.GetMouseButtonDown(1) && !inventoryIsActive && !menuOpen)
             {
                 if (isMelee)
                 {
@@ -580,7 +586,7 @@ public class PlayerController : MonoBehaviour {
             {
                 PlayerManager.Instance.invulnerable = false;
             }
-            if (Input.GetMouseButtonDown(0) && attackTimer <= 0 && !inventoryIsActive)
+            if (Input.GetMouseButtonDown(0) && attackTimer <= 0 && !inventoryIsActive && !menuOpen)
             {
                 if (!isMelee && count > 0)
                 {
@@ -608,8 +614,7 @@ public class PlayerController : MonoBehaviour {
                             Inventory.Instance.Remove("Homing Arrow", 1);
                         }
                     }
-
-                    //GameObject.Find ("Inventory").GetComponent<Inventory> ().RemoveItem (2);
+                    
                 }
                 if (isMelee)
                 {
@@ -669,6 +674,21 @@ public class PlayerController : MonoBehaviour {
                         }
                     }
                 }
+            }
+
+            if((ShopMenu.Instance && ShopMenu.Instance.MenuIsActive()) || PlayerMenu.Instance.MenuIsActive() || skillTree || levelTree)
+            {
+                // Set Hotbar to inactive
+                HotbarParent.Instance.transform.GetChild(0).gameObject.SetActive(false);
+                HotbarParent.Instance.SetMenuActive(false);
+                menuOpen = true;
+            }
+            else if(!HotbarParent.Instance.transform.GetChild(0).gameObject.activeSelf)
+            {
+                // Set Hotbar to active
+                HotbarParent.Instance.transform.GetChild(0).gameObject.SetActive(true);
+                HotbarParent.Instance.SetMenuActive(true);
+                menuOpen = false;
             }
         }
         

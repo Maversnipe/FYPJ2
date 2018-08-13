@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
-public class Slot : MonoBehaviour {
+[Serializable()]
+public class Slot : MonoBehaviour, ISerializable {
     // Slot Type
     public SlotType m_slotType;
     // Slot ID
@@ -51,7 +55,6 @@ public class Slot : MonoBehaviour {
             // Can add item info screen here
             if (!PlayerMenu.Instance.m_infoBox.gameObject.activeSelf)
             {
-                Debug.Log("Pls help me");
                 // Set Info box to be active
                 PlayerMenu.Instance.m_infoBox.gameObject.SetActive(true);
                 // Set this slot to be the current slot id in player menu
@@ -112,7 +115,6 @@ public class Slot : MonoBehaviour {
                     else if (this.m_slotID == RuneMenu.Instance.m_ArmourSlot_1.m_slotID
                         || this.m_slotID == RuneMenu.Instance.m_ArmourSlot_2.m_slotID)
                     {   // Armour Rune
-                        Debug.Log("I AM THE KING OF THE WORLD");
                         PlayerManager.Instance.SetBonuses(2);
                     }
                 }
@@ -168,7 +170,6 @@ public class Slot : MonoBehaviour {
                         else if (this.m_slotID == RuneMenu.Instance.m_ArmourSlot_1.m_slotID
                             || this.m_slotID == RuneMenu.Instance.m_ArmourSlot_2.m_slotID)
                         {   // Armour Rune
-                            Debug.Log("I AM THE KING OF THE WORLD");
                             PlayerManager.Instance.SetBonuses(2);
                         }
                     }
@@ -273,6 +274,12 @@ public class Slot : MonoBehaviour {
         return m_isEmpty;
     }
 
+    // Getter for whether slot is empty
+    public void SetIsEmpty(bool _empty)
+    {
+        m_isEmpty = _empty;
+    }
+
     // Getter for contains point
     public bool ContainsPoint()
     {
@@ -283,5 +290,9 @@ public class Slot : MonoBehaviour {
     public void SetContainsPoint(bool _contains)
     {
         m_containsPoint = _contains;
+    }
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
     }
 }

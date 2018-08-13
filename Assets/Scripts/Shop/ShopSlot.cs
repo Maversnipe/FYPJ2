@@ -122,7 +122,6 @@ public class ShopSlot : MonoBehaviour {
             // Enough, set true
             m_ableToBuy = true;
         }
-        Debug.Log(PlayerManager.Instance.m_moneyAmount);
     }
 
     // Add item to slot

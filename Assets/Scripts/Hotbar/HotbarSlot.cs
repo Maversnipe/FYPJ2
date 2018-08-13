@@ -31,16 +31,16 @@ public class HotbarSlot : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // Checks if cursor is over slot and if player has clicked
-        if (m_containsPoint && Input.GetMouseButton(0))
-        {
-            // Create a temp to store previous slot ID
-            int prevID = HotbarParent.Instance.GetCurrentSlotID();
-            // Set the previous selected to false
-            Hotbar.Instance.transform.GetChild(prevID).GetChild(0).gameObject.SetActive(false);
-            // Set current slot as selected
-            HotbarParent.Instance.SetCurrSlotID(m_hotbarSlotID);
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
+        //if (m_containsPoint && Input.GetMouseButton(0))
+        //{
+        //    // Create a temp to store previous slot ID
+        //    int prevID = HotbarParent.Instance.GetCurrentSlotID();
+        //    // Set the previous selected to false
+        //    Hotbar.Instance.transform.GetChild(prevID).GetChild(0).gameObject.SetActive(false);
+        //    // Set current slot as selected
+        //    HotbarParent.Instance.SetCurrSlotID(m_hotbarSlotID);
+        //    transform.GetChild(0).gameObject.SetActive(true);
+        //}
 
         // Checks if it exists in inventory
         Stack<Item> itemStack = null;

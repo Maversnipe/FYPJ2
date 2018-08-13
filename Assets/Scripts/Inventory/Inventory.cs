@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour {
     // Make this a Singleton
     private static Inventory _instance;
     public static Inventory Instance { get { return _instance; } }
+
     private void Awake()
     {
         if(_instance != null && _instance != this)
@@ -16,7 +17,6 @@ public class Inventory : MonoBehaviour {
         {
             _instance = this;
         }
-        DontDestroyOnLoad(this);
     }
 
     // Num Of Slots
@@ -25,12 +25,15 @@ public class Inventory : MonoBehaviour {
     // Item Database
     private ItemDatabase m_database;
     // Array that contains all inv slots
-    private GameObject[] m_slotList;
+    private GameObject[] m_slotList = null;
     // Number of slots used
     private int m_numSlotsUsed;
 
     void Start()
     {
+        Debug.Log("No potatoes please");
+        if (m_slotList != null)
+            Debug.Log("Ya potatoes");
         // Initialise array
         m_slotList = new GameObject[m_numSlots];
         // Initialize m_database
@@ -83,7 +86,8 @@ public class Inventory : MonoBehaviour {
                 }
                 else if(!m_slotList[i].GetComponent<Slot>().IsEmpty())
                 {
-                    if(m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_item.m_itemName))
+                    Debug.Log(m_slotList);
+                    if (m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_item.m_itemName))
                     {
                         addedToStack = true;
                         // Add to stack
@@ -128,6 +132,7 @@ public class Inventory : MonoBehaviour {
             if (!m_slotList[i].GetComponent<Slot>().IsEmpty())
             {   // If slot not empty
                 // Checks if both have same name
+                Debug.Log(m_slotList);
                 if (m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_itemName))
                 {   // If name matches
                     // Loop through the number of times the item is to be removed
@@ -137,12 +142,16 @@ public class Inventory : MonoBehaviour {
                         m_slotList[i].GetComponent<Slot>().m_item.Pop();
 
                         if (m_slotList[i].GetComponent<Slot>().m_item.Count == 0)
+                        {
+                            m_slotList[i].GetComponent<Slot>().SetIsEmpty(true);
                             break;
+                        }
                     }
                 }
             }
         }
     }
+
     // Remove item from inventory
     public void Remove()
     {
@@ -163,6 +172,8 @@ public class Inventory : MonoBehaviour {
             if (!m_slotList[i].GetComponent<Slot>().IsEmpty())
             {   // If slot not empty
                 // Checks if both have same name
+                Debug.Log(m_slotList[i]);
+                Debug.Log(m_slotList[i].GetComponent<Slot>().m_item.Count);
                 if (m_slotList[i].GetComponent<Slot>().m_item.Peek().m_itemName.Equals(_itemName))
                 {   // If name matches
                     return m_slotList[i].GetComponent<Slot>().m_item;

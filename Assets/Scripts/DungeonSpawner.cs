@@ -28,7 +28,10 @@ public class DungeonSpawner : MonoBehaviour
     private TileType[][] tiles;                             
     private Room[] rooms;                                   
     private Corridor[] corridors;                            
-    private GameObject tileHolder;                         
+    private GameObject tileHolder;
+
+    private bool GameWin = false;
+    private bool GameLose = false;      
 
 
     private void Start()
@@ -282,6 +285,48 @@ public class DungeonSpawner : MonoBehaviour
             if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
             {
                 //gameover
+                GameWin = true;
+            }
+            if(PlayerManager.Instance.m_currentHealth <= 0)
+            {
+                GameLose = true;
+            }
+
+            if(GameWin)
+            {
+                PlayerManager.Instance.pause = true;
+                GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).gameObject.SetActive(true);
+                Rune newItem;
+                // Randomise Rune
+                int randNum = (int)Random.Range(0, 10);
+                if(randNum % 2 == 0)
+                { // Attack Rune
+                    newItem = new Rune("Weapon Rune", Item.ItemType.Weapon_Rune);
+                    newItem.RandomiseRune();
+                    GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetComponent<WinSlot>().m_item
+                        = newItem;
+                }
+                else
+                { // Defense Rune
+                    newItem = new Rune("Armour Rune", Item.ItemType.Armour_Rune);
+                    newItem.RandomiseRune();
+                    GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetComponent<WinSlot>().m_item
+                        = newItem;
+                }
+                GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite
+                    = GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetComponent<WinSlot>().m_item.m_itemIcon;
+
+                GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>().text 
+                    = newItem.m_itemName;
+
+                GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetComponent<Text>().text
+                    = newItem.m_itemDesc;
+            }
+
+            if (GameLose)
+            {
+                PlayerManager.Instance.pause = true;
+                GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(1).gameObject.SetActive(true);
             }
         }
     }
