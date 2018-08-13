@@ -139,6 +139,7 @@ public class PlayerManager : MonoBehaviour
         levels.Add(PlayerPrefs.GetInt("StrengthPoints"));
         levels.Add(PlayerPrefs.GetInt("AttackSpeedPoints"));
         m_currentLevel = PlayerPrefs.GetInt("Level");
+        m_currentLevel = 2;
         totalSkillPoints = m_currentLevel / 3;
         skillPoints = totalSkillPoints;
         for (int i = 0; i < skills.Count; i++)

@@ -51,6 +51,18 @@ public class Inventory : MonoBehaviour {
         }
         // Set num of slots used
         m_numSlotsUsed = 0;
+        Rune newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
+        newRune.RandomiseRune();
+        Add(newRune);
+        newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
+        newRune.RandomiseRune();
+        Add(newRune);
+        newRune = new Rune("Weapon Rune", 0, Item.ItemType.Weapon_Rune);
+        newRune.RandomiseRune();
+        Add(newRune);
+        newRune = new Rune("Weapon Rune", 0, Item.ItemType.Weapon_Rune);
+        newRune.RandomiseRune();
+        Add(newRune);
     }
 
     void Update()
