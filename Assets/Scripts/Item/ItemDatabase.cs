@@ -39,4 +39,20 @@ public class ItemDatabase : MonoBehaviour {
         m_itemsList.Add(new ShopItem("Large Mana Pot", 10, "Adds 50 Mana", Item.ItemType.Arrow, true, 40));
 
     }
+
+    // Use a name to find an item
+    public Item GetItem(string _name)
+    {
+        // Loop through item database
+        for(int i = 0; i < m_itemsList.Count; ++i)
+        {
+            // Check if name matches
+            if(_name.Equals(m_itemsList[i].m_itemName))
+            {
+                // Return if name matches
+                return m_itemsList[i];
+            }
+        }
+        return null;
+    }
 }

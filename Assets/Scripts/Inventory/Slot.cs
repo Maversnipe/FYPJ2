@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
-[Serializable()]
-public class Slot : MonoBehaviour, ISerializable {
+public class Slot : MonoBehaviour {
     // Slot Type
     public SlotType m_slotType;
     // Slot ID
@@ -227,6 +223,9 @@ public class Slot : MonoBehaviour, ISerializable {
             m_countText.text = m_item.Count.ToString();
             m_countText.gameObject.SetActive(true);
         }
+
+        // Save inventory
+        SaveInventory.Instance.Save();
     }
 
     // Remove 1 item from the slot
@@ -253,6 +252,9 @@ public class Slot : MonoBehaviour, ISerializable {
         {
             m_countText.gameObject.SetActive(false);
         }
+
+        // Save inventory
+        SaveInventory.Instance.Save();
     }
 
     // Clear slot
@@ -290,9 +292,5 @@ public class Slot : MonoBehaviour, ISerializable {
     public void SetContainsPoint(bool _contains)
     {
         m_containsPoint = _contains;
-    }
-
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
     }
 }

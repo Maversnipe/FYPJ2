@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour {
     // Item Database
     private ItemDatabase m_database;
     // Array that contains all inv slots
-    private GameObject[] m_slotList = null;
+    public GameObject[] m_slotList = null;
     // Number of slots used
     private int m_numSlotsUsed;
 
@@ -49,20 +49,16 @@ public class Inventory : MonoBehaviour {
             else
                 numOfNonSlot++;
         }
+
+        SaveInventory.Instance.Load();
+
         // Set num of slots used
-        m_numSlotsUsed = 0;
-        Rune newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
-        newRune.RandomiseRune();
-        Add(newRune);
-        newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
-        newRune.RandomiseRune();
-        Add(newRune);
-        newRune = new Rune("Weapon Rune", 0, Item.ItemType.Weapon_Rune);
-        newRune.RandomiseRune();
-        Add(newRune);
-        newRune = new Rune("Weapon Rune", 0, Item.ItemType.Weapon_Rune);
-        newRune.RandomiseRune();
-        Add(newRune);
+        //m_numSlotsUsed = 0;
+        //Rune newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
+        //newRune.RandomiseRune();
+        //Add(newRune);
+
+
     }
 
     void Update()
@@ -131,6 +127,9 @@ public class Inventory : MonoBehaviour {
             }
         }
 
+        // Save inventory
+        SaveInventory.Instance.Save();
+
         // Item is added
         return true;
     }
@@ -156,22 +155,15 @@ public class Inventory : MonoBehaviour {
                         if (m_slotList[i].GetComponent<Slot>().m_item.Count == 0)
                         {
                             m_slotList[i].GetComponent<Slot>().SetIsEmpty(true);
+
+                            // Save inventory
+                            SaveInventory.Instance.Save();
                             break;
                         }
                     }
                 }
             }
         }
-    }
-
-    // Remove item from inventory
-    public void Remove()
-    {
-        // Check if the inventory is empty
-        if (m_numSlotsUsed <= 0)
-            return;
-
-
     }
 
     // Search for items in inventory

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RuneMenu : MonoBehaviour
 {
-
     // Make this a Singleton
     private static RuneMenu _instance;
     public static RuneMenu Instance { get { return _instance; } }
