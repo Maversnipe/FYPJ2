@@ -36,6 +36,7 @@ public class SaveInventory : MonoBehaviour {
     // Save the player's inventory info
     public void Save()
     {
+        // For Inventory Slots
         // Iterate through array of Slots
         for(int i = 0; i < Inventory.Instance.m_slotList.Length; ++i)
         {
@@ -59,12 +60,7 @@ public class SaveInventory : MonoBehaviour {
                     // Cast item as rune
                     Rune theRune = (Rune)theItem;
                     // Create a save
-                    ItemSave _runeSave = new ItemSave(theRune.m_runePower, (int)theRune.m_itemType, itemCount, theRune.m_itemName);
-
-                    Debug.Log(_runeSave.GetRunePower());
-                    Debug.Log(_runeSave.GetItemType());
-                    Debug.Log(_runeSave.GetCount());
-                    Debug.Log(_runeSave.GetName());
+                    ItemSave _runeSave = new ItemSave(theRune.m_runePower, (int)theRune.m_itemType, itemCount, theRune.m_itemName);                   
                     // Name of save
                     string runeSaveName = "InventorySlot" + i.ToString();
                     // Convert save to json
@@ -87,41 +83,48 @@ public class SaveInventory : MonoBehaviour {
                     break;
             }
         }
+
+        // For Rune Slots
     }
 
     // Load the player's inventory info
     public void Load()
     {
+        // For Inventory Slots
+        // Iterate through the whole inventory
         for(int i = 0; i < Inventory.Instance.m_slotList.Length; ++i)
         {
+            // Save name
             string saveName = "InventorySlot" + i.ToString();
+            // The saved item
             string theSave = PlayerPrefs.GetString(saveName);
-            Debug.Log(theSave);
+            // Check if there are any saves under the save name
             if (theSave != null && theSave.Length > 0)
             {
                 // Get item from json string
                 ItemSave theItem = JsonUtility.FromJson<ItemSave>(theSave);
+                // Check if item is null
                 if(theItem != null)
                 {
+                    // Iterate to give the amount of objects
                     for (int j = 0; j < theItem.GetCount(); ++j)
                     {
                         // Check if it is rune type or not
                         if (theItem.GetRunePower() == -1)
                         {
+                            // Cast as ShopItem type
                             ShopItem _item = (ShopItem)m_database.GetItem(theItem.GetName());
+                            // Push into the slot item stack
                             Inventory.Instance.m_slotList[i].GetComponent<Slot>().
                                 m_item.Push(_item);
-                            Debug.Log(saveName);
-                            Debug.Log("Yoshinoya2.0");
                         }
                         else
                         {
+                            // Cast as Rune type
                             Rune _rune = new Rune();
                             _rune.SetRune(theItem.GetRunePower(), theItem.GetItemType());
+                            // Push into the slot item stack
                             Inventory.Instance.m_slotList[i].GetComponent<Slot>().m_item.Push(_rune);
-
-                            Debug.Log(saveName);
-                            Debug.Log("Yoshinoya");
                         }
                     }
 
@@ -138,11 +141,9 @@ public class SaveInventory : MonoBehaviour {
                     }
                     // Set slot to not empty
                     Inventory.Instance.m_slotList[i].GetComponent<Slot>().SetIsEmpty(false);
-
-
                 }
                 else
-                {
+                {   // If item is null
                     Debug.Log("The Load has a problem");
                 }
             }
