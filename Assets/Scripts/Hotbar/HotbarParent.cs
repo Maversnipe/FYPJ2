@@ -17,7 +17,6 @@ public class HotbarParent : MonoBehaviour {
         {
             _instance = this;
         }
-        DontDestroyOnLoad(this);
     }
 
     // Current info box slot id

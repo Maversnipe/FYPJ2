@@ -17,7 +17,6 @@ public class RuneMenu : MonoBehaviour
         {
             _instance = this;
         }
-        DontDestroyOnLoad(this);
     }
 
     // Armour Slot 1

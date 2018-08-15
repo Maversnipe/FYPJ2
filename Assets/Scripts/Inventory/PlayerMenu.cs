@@ -18,7 +18,6 @@ public class PlayerMenu : MonoBehaviour {
         {
             _instance = this;
         }
-        DontDestroyOnLoad(this);
     }
 
     // Info box image
@@ -27,6 +26,8 @@ public class PlayerMenu : MonoBehaviour {
     public Stack<Item> m_targetItem;
     // The image of the target item
     public Image m_targetImage;
+    // The money counter for inventory
+    public Image m_moneyCounter;
 
     // Current info box slot id
     private int m_currSlotID;
