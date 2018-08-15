@@ -60,7 +60,7 @@ public class SaveInventory : MonoBehaviour {
                     // Cast item as rune
                     Rune theRune = (Rune)theItem;
                     // Create a save
-                    ItemSave _runeSave = new ItemSave(theRune.m_runePower, (int)theRune.m_itemType, itemCount, theRune.m_itemName);                   
+                    ItemSave _runeSave = new ItemSave(theRune.m_runePower, (int)theRune.m_itemType, 1, theRune.m_itemName);                   
                     // Name of save
                     string runeSaveName = "InventorySlot" + i.ToString();
                     // Convert save to json
@@ -85,6 +85,30 @@ public class SaveInventory : MonoBehaviour {
         }
 
         // For Rune Slots
+        // Iterate through array of rune slots
+        for(int i = 0; i < RuneMenu.Instance.m_runeSlotList.Length; ++i)
+        {
+            // Check if there are items
+            if (RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_item.Count == 0)
+            {   // If no items
+                // Name of save
+                string saveName = "RuneSlot" + i.ToString();
+                // Set in PlayerPrefs to nothing
+                PlayerPrefs.SetString(saveName, "");
+                continue;
+            }
+
+            // Get the item
+            Rune theRune = (Rune)RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_item.Peek();
+            // Create a save
+            ItemSave _runeSave = new ItemSave(theRune.m_runePower, (int)theRune.m_itemType, 1, theRune.m_itemName);
+            // Name of save
+            string runeSaveName = "RuneSlot" + i.ToString();
+            // Convert save to json
+            string jsonRuneSave = JsonUtility.ToJson(_runeSave);
+            // Set in PlayerPrefs
+            PlayerPrefs.SetString(runeSaveName, jsonRuneSave);
+        }
     }
 
     // Load the player's inventory info
@@ -148,5 +172,53 @@ public class SaveInventory : MonoBehaviour {
                 }
             }
         }
+
+        // For Rune Slots
+        // Iterate through rune menu
+        for(int i = 0; i < RuneMenu.Instance.m_runeSlotList.Length; ++i)
+        {
+            // Save name
+            string saveName = "RuneSlot" + i.ToString();
+            // The saved item
+            string theSave = PlayerPrefs.GetString(saveName);
+            // Check if there are any saves under the save name
+            if (theSave != null && theSave.Length > 0)
+            {
+                // Get item from json string
+                ItemSave theItem = JsonUtility.FromJson<ItemSave>(theSave);
+                // Check if item is null
+                if (theItem != null)
+                {
+                    // Iterate to give the amount of objects
+                    for (int j = 0; j < theItem.GetCount(); ++j)
+                    {                       
+                         // Cast as Rune type
+                         Rune _rune = new Rune();
+                         _rune.SetRune(theItem.GetRunePower(), theItem.GetItemType());
+                        // Push into the slot item stack
+                        RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_item.Push(_rune);                            
+                    }
+
+                    // Spawn item
+                    RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_icon.gameObject.SetActive(true);
+                    RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_icon.sprite =
+                    RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_item.Peek().m_itemIcon;
+                    // Check if more than 1 of the item
+                    if (theItem.GetCount() > 1)
+                    {
+                        // Spawn item count 
+                        RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_countText.gameObject.SetActive(true);
+                        RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().m_countText.text = theItem.GetCount().ToString();
+                    }
+                    // Set slot to not empty
+                    RuneMenu.Instance.m_runeSlotList[i].GetComponent<Slot>().SetIsEmpty(false);
+                }
+                else
+                {   // If item is null
+                    Debug.Log("The Load has a problem");
+                }
+            }
+        }
     }
+
 }

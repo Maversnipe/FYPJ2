@@ -49,16 +49,6 @@ public class Inventory : MonoBehaviour {
             else
                 numOfNonSlot++;
         }
-
-        SaveInventory.Instance.Load();
-
-        // Set num of slots used
-        //m_numSlotsUsed = 0;
-        //Rune newRune = new Rune("Armour Rune", 0, Item.ItemType.Armour_Rune);
-        //newRune.RandomiseRune();
-        //Add(newRune);
-
-
     }
 
     void Update()
