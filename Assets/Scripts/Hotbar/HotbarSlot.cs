@@ -18,7 +18,6 @@ public class HotbarSlot : MonoBehaviour {
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
     }
 
     // Use this for initialization

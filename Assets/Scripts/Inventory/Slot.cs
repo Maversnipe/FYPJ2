@@ -30,7 +30,6 @@ public class Slot : MonoBehaviour {
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
     }
 
     void Start()
@@ -45,6 +44,20 @@ public class Slot : MonoBehaviour {
 
     void Update()
     {
+        // Add the money counter if shop is active
+        if (ShopMenu.Instance && ShopMenu.Instance.MenuIsActive())
+        {   // Render the money counter
+            // Set money counter to active
+            PlayerMenu.Instance.m_moneyCounter.gameObject.SetActive(true);
+            // Set the amount to the correct amount
+            PlayerMenu.Instance.m_moneyCounter.transform.GetChild(0).GetComponent<Text>().text = "$" + PlayerManager.Instance.m_moneyAmount.ToString();
+        }
+        else
+        {
+            // Set money counter to active
+            PlayerMenu.Instance.m_moneyCounter.gameObject.SetActive(false);
+        }
+
         // Check if mouse cursor is in slot and if slot is empty
         if (!m_isEmpty && m_containsPoint)
         {
@@ -59,6 +72,40 @@ public class Slot : MonoBehaviour {
                 PlayerMenu.Instance.m_infoBox.transform.GetChild(0).GetComponent<Text>().text = m_item.Peek().m_itemName;
                 // Set the item information
                 PlayerMenu.Instance.m_infoBox.transform.GetChild(1).GetComponent<Text>().text = m_item.Peek().m_itemDesc;
+
+                // If shop exists and is open
+                if(ShopMenu.Instance && ShopMenu.Instance.MenuIsActive())
+                {
+                    Item theItem = m_item.Peek();
+                    // Cost
+                    string theCost = "$";
+                    // Check if it is a shop item
+                    if(m_item.Peek().m_itemType == Item.ItemType.Arrow
+                        || m_item.Peek().m_itemType == Item.ItemType.Consumables)
+                    {   // If it is a shop item
+                        // Cast as shop item
+                        ShopItem _itemShop = (ShopItem)theItem;
+                        theCost += _itemShop.m_itemPrice;
+                    }
+                    else if (m_item.Peek().m_itemType == Item.ItemType.Armour_Rune
+                        || m_item.Peek().m_itemType == Item.ItemType.Weapon_Rune)
+                    {   // If it is not a shop item
+                        // Cast as rune
+                        Rune _itemRune = (Rune)theItem;
+                        theCost += _itemRune.m_runePower.ToString();
+                    }
+
+                    // Set the item cost
+                    PlayerMenu.Instance.m_infoBox.transform.GetChild(2).GetComponent<Text>().text = theCost;
+                    // Set the cost to be active
+                    PlayerMenu.Instance.m_infoBox.transform.GetChild(2).gameObject.SetActive(true);
+                }
+                else
+                {
+                    // Set active of the cost to be false
+                    PlayerMenu.Instance.m_infoBox.transform.GetChild(2).gameObject.SetActive(false);
+                }
+
                 // Change the position of the info box
                 if (this.m_slotType == SlotType.All)
                 {
@@ -74,9 +121,9 @@ public class Slot : MonoBehaviour {
                 }
             }
 
-            // Check if mouse button is pressed and if player has no target item
+            // Check if left mouse button is pressed and if player has no target item
             if (!PlayerMenu.Instance.HasTarget() && Input.GetMouseButtonDown(0))
-            { // Select item if no target item in hand
+            {   // Select item if no target item in hand
                 // Make the target item be this slot's item
                 for(int i = 0; i < m_item.Count; ++i)
                 {
@@ -114,8 +161,29 @@ public class Slot : MonoBehaviour {
                         PlayerManager.Instance.SetBonuses(2);
                     }
                 }
-            }       
-        }
+            }
+            // Check if right mouse button is pressed and if player has no target item
+            else if (!PlayerMenu.Instance.HasTarget() && Input.GetMouseButtonDown(1))
+            {   // Sell item if no target item in hand
+                // Add value into the player's money
+                if (m_item.Peek().m_itemType == Item.ItemType.Arrow
+                            || m_item.Peek().m_itemType == Item.ItemType.Consumables)
+                {   // If it is a shop item
+                    // Cast as shop item
+                    ShopItem _itemShop = (ShopItem)m_item.Peek();
+                    PlayerManager.Instance.m_moneyAmount += _itemShop.m_itemPrice;
+                }
+                else if (m_item.Peek().m_itemType == Item.ItemType.Armour_Rune
+                    || m_item.Peek().m_itemType == Item.ItemType.Weapon_Rune)
+                {   // If it is not a shop item
+                    // Cast as rune
+                    Rune _itemRune = (Rune)m_item.Peek();
+                    PlayerManager.Instance.m_moneyAmount += _itemRune.m_runePower;
+                }
+                // Remove 1 of item from slot
+                RemoveItem(1);
+            }
+        }        
         else if (m_isEmpty && m_containsPoint)
         {
             // Check if mouse button is pressed and if player has target item

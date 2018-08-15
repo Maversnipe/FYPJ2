@@ -464,45 +464,48 @@ public class PlayerController : MonoBehaviour {
             }
             if (!isAttacking)
             {
-                if (Input.GetAxisRaw("Horizontal") > 0.5 || Input.GetAxisRaw("Horizontal") < -0.5)
+                if (!menuOpen)
                 {
-                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed, body.velocity.y);
-                    if (Input.GetAxisRaw("Horizontal") > 0)
+                    if (Input.GetAxisRaw("Horizontal") > 0.5 || Input.GetAxisRaw("Horizontal") < -0.5)
                     {
-                        body.velocity *= dashSpeedRight;
-                    }
-                    if (Input.GetAxisRaw("Horizontal") < 0)
-                    {
-                        body.velocity *= dashSpeedLeft;
-                    }
-                    dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
-                    isMoving = true;
-                    dir = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+                        body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed, body.velocity.y);
+                        if (Input.GetAxisRaw("Horizontal") > 0)
+                        {
+                            body.velocity *= dashSpeedRight;
+                        }
+                        if (Input.GetAxisRaw("Horizontal") < 0)
+                        {
+                            body.velocity *= dashSpeedLeft;
+                        }
+                        dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+                        isMoving = true;
+                        dir = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
 
-                }
-                if (Input.GetAxisRaw("Vertical") > 0.5 || Input.GetAxisRaw("Vertical") < -0.5)
-                {
-                    body.velocity = new Vector2(body.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);
-                    isMoving = true;
-                    if (Input.GetAxisRaw("Vertical") > 0)
-                    {
-                        body.velocity *= dashSpeedUp;
                     }
-                    if (Input.GetAxisRaw("Vertical") < 0)
+                    if (Input.GetAxisRaw("Vertical") > 0.5 || Input.GetAxisRaw("Vertical") < -0.5)
                     {
-                        body.velocity *= dashSpeedDown;
+                        body.velocity = new Vector2(body.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);
+                        isMoving = true;
+                        if (Input.GetAxisRaw("Vertical") > 0)
+                        {
+                            body.velocity *= dashSpeedUp;
+                        }
+                        if (Input.GetAxisRaw("Vertical") < 0)
+                        {
+                            body.velocity *= dashSpeedDown;
+                        }
+                        dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
                     }
-                    dir = new Vector2(0f, Input.GetAxisRaw("Vertical"));
-                }
-                if (Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f)
-                {
-                    body.velocity = new Vector2(0f, body.velocity.y);
-                    //body.velocity *= dashSpeedLeft;
-                }
-                if (Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f)
-                {
-                    body.velocity = new Vector2(body.velocity.x, 0f);
-                    //body.velocity *= dashSpeedDown;
+                    if (Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f)
+                    {
+                        body.velocity = new Vector2(0f, body.velocity.y);
+                        //body.velocity *= dashSpeedLeft;
+                    }
+                    if (Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f)
+                    {
+                        body.velocity = new Vector2(body.velocity.x, 0f);
+                        //body.velocity *= dashSpeedDown;
+                    }
                 }
             }
 

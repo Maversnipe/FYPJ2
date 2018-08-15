@@ -330,12 +330,15 @@ public class DungeonSpawner : MonoBehaviour
                     GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetComponent<WinSlot>().m_item
                         = newItem;
                 }
+                // Add item into inventory
+                Inventory.Instance.Add(newItem);
+                // Set the slot to contain the new rune
                 GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite
                     = GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetComponent<WinSlot>().m_item.m_itemIcon;
-
+                // Set the new rune name
                 GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>().text 
                     = newItem.m_itemName;
-
+                // Set the new rune ability
                 GameObject.FindGameObjectWithTag("GameoverScreen").transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetComponent<Text>().text
                     = newItem.m_itemDesc;
             }
