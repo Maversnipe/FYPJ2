@@ -6,11 +6,9 @@ public class LaserBowSkill : MonoBehaviour {
 
     public int attackDmg;
     public GameObject damageCounter;
-    float rotate;
     // Use this for initialization
     void Start()
     {
-        rotate = 0;
     }
 
     // Update is called once per frame

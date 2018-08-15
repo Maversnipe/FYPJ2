@@ -21,9 +21,7 @@ public class Inventory : MonoBehaviour {
 
     // Num Of Slots
     public int m_numSlots;
-
-    // Item Database
-    private ItemDatabase m_database;
+    
     // Array that contains all inv slots
     public GameObject[] m_slotList = null;
     // Number of slots used
@@ -31,13 +29,8 @@ public class Inventory : MonoBehaviour {
 
     void Start()
     {
-        Debug.Log("No potatoes please");
-        if (m_slotList != null)
-            Debug.Log("Ya potatoes");
         // Initialise array
         m_slotList = new GameObject[m_numSlots];
-        // Initialize m_database
-        m_database = GameObject.FindGameObjectWithTag("ItemDatabase").GetComponent<ItemDatabase>();
         // int that keeps track of number of non-slot children
         int numOfNonSlot = 0;
         // Fill up the slot list

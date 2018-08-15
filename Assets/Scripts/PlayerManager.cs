@@ -68,8 +68,7 @@ public class PlayerManager : MonoBehaviour
     public bool unlimited;
 
     public float timer;
-
-    int hello = 0;
+    
     // Make this a Singleton
     private static PlayerManager _instance;
     public static PlayerManager Instance { get { return _instance; } }
