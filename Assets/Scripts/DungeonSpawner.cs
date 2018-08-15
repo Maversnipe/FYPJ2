@@ -106,12 +106,6 @@ public class DungeonSpawner : MonoBehaviour
 
                 corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
             }
-
-
-                playerPos = new Vector3(rooms[i].xPos, rooms[i].yPos, 0);
-
-                Instantiate(slime, playerPos, Quaternion.identity);
-                Instantiate(slime, playerPos, Quaternion.identity);
         }
 
     }
@@ -124,18 +118,41 @@ public class DungeonSpawner : MonoBehaviour
         {
             Room currentRoom = rooms[i];
 
+            int xCoord = 0;
+            int yCoord = 0;
 
             for (int j = 0; j < currentRoom.roomWidth; j++)
             {
-                int xCoord = currentRoom.xPos + j;
+                xCoord = currentRoom.xPos + j;
 
 
                 for (int k = 0; k < currentRoom.roomHeight; k++)
                 {
-                    int yCoord = currentRoom.yPos + k;
+                    yCoord = currentRoom.yPos + k;
 
 
                     tiles[xCoord][yCoord] = TileType.Floor;
+                }
+            }
+
+
+            Vector2 start = new Vector2(currentRoom.xPos, currentRoom.yPos);
+            Vector2 end = new Vector2(currentRoom.xPos + currentRoom.roomWidth - 1, currentRoom.yPos + currentRoom.roomHeight - 1);
+
+
+            if (i != 0)
+            {
+                Vector3 playerPos = new Vector3(Random.Range(start.x, end.x), Random.Range(start.y, end.y), 0);
+                Instantiate(slime, playerPos, Quaternion.identity);
+                playerPos = new Vector3(Random.Range(start.x, end.x), Random.Range(start.y, end.y), 0);
+                Instantiate(slime, playerPos, Quaternion.identity);
+                for (int m = 0; m < GameObject.FindGameObjectsWithTag("Enemy").Length; m++)
+                {
+                    if (m > GameObject.FindGameObjectsWithTag("Enemy").Length - 3)
+                    {
+                        GameObject.FindGameObjectsWithTag("Enemy")[m].GetComponent<AI>().roomStart.Set(start.x, start.y);
+                        GameObject.FindGameObjectsWithTag("Enemy")[m].GetComponent<AI>().roomEnd.Set(end.x, end.y);
+                    }
                 }
             }
         }

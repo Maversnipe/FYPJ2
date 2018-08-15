@@ -44,7 +44,7 @@ public class Bow : MonoBehaviour {
                         arrowPrefab.GetComponent<Arrow>().target = GameObject.FindGameObjectsWithTag("Enemy")[i];
                         arrowPrefab.GetComponent<Arrow>().skill1 = true;
                         hello++;
-                        if (hello == 3)
+                        if (hello == 1)
                         {
                             break;
                         }

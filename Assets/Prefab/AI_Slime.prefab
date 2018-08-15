@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 50323948362252600}
   - component: {fileID: 114498650511578684}
   - component: {fileID: 58310251089746298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AI_Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  target: {x: 0, y: 0}
+  target: {x: 0, y: 0, z: 0}
   dir: {x: 0, y: 0}
   shortestDist: 1000
   cooldownTime: 0
@@ -122,8 +122,12 @@ MonoBehaviour:
   slowTimer: 0
   slowSpeed: 0
   stunTimer: 0
+  roomStart: {x: 0, y: 0}
+  roomEnd: {x: 0, y: 0}
   damageCounter: {fileID: 1184959573766018, guid: 7a67eadebca3e37439b78779c8b4e1dc,
     type: 2}
+  chase: 0
+  idle: 0
 --- !u!212 &212385287542516968
 SpriteRenderer:
   m_ObjectHideFlags: 1
