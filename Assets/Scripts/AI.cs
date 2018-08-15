@@ -6,7 +6,7 @@ public class AI : MonoBehaviour {
 
     public float moveSpeed;
     private Rigidbody2D body;
-    public Vector2 target;
+    public Vector3 target;
     public Vector2 dir;
     public float shortestDist;
     public float cooldownTime;
@@ -22,7 +22,11 @@ public class AI : MonoBehaviour {
     public float slowTimer;
     public float slowSpeed;
     public float stunTimer;
+    public Vector2 roomStart;
+    public Vector2 roomEnd;
     public GameObject damageCounter;
+    public bool chase;
+    public float idle;
 
     // Use this for initialization
     void Start () {
@@ -31,17 +35,22 @@ public class AI : MonoBehaviour {
         AttackDmg += PlayerManager.Instance.m_currentLevel * 10;
         currentHP = maxHP;
         shortestDist = 100000;
-        target.Set(transform.position.x, transform.position.y);
+        target.Set(transform.position.x, transform.position.y, transform.position.z);
         knockback = false;
         stun = false;
         slow = false;
         slowTimer = 5;
         slowSpeed = 1;
         cooldownTime = 1.5f;
+        dir.Set(0, 0);
+        idle = 2;
+        chase = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        string help = "Start:" + roomStart.x + "," + roomStart.y + "End: " + roomEnd.x + "," + roomEnd.y;
+        Debug.Log(help);
         if (!PlayerManager.Instance.pause)
         {
             if (slow)
@@ -56,18 +65,60 @@ public class AI : MonoBehaviour {
                 slowTimer = 5f;
             }
             shortestDist = 100000;
-            dir.Set(0, 0);
             if (!knockback && !stun)
             {
-                for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
+                if(!chase)
                 {
-                    float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
-                    if (dist < 5 && dist > 0 && dist < shortestDist)
+                    if(Vector2.Distance(transform.position, target) <= 1)
                     {
-                        shortestDist = dist;
-                        target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y);
+                        idle =- Time.deltaTime;
+
+                    }
+                    if(idle <= 0)
+                    {
+                        target.x = Random.Range(roomStart.x, roomEnd.x);
+                        target.y = Random.Range(roomStart.y, roomEnd.y);
+                        idle = 2;
+                    }
+                    for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
+                    {
+                        if (GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x > roomStart.x && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x < roomEnd.x
+                            && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y > roomStart.y && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y < roomEnd.y)
+                        {
+                            float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
+                            if (dist < 5 && dist > 0 && dist < shortestDist)
+                            {
+                                shortestDist = dist;
+                                target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.z);
+                                chase = true;
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < GameObject.FindGameObjectsWithTag("Player").Length; i++)
+                    {
+                        if (GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x > roomStart.x && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x < roomEnd.x
+                        && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y > roomStart.y && GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y < roomEnd.y)
+                        {
+                            float dist = Vector3.Distance(GameObject.FindGameObjectsWithTag("Player")[i].transform.position, transform.position);
+                            if (dist < 5 && dist > 0 && dist < shortestDist)
+                            {
+                                shortestDist = dist;
+                                target.Set(GameObject.FindGameObjectsWithTag("Player")[i].transform.position.x, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.y, GameObject.FindGameObjectsWithTag("Player")[i].transform.position.z);
+                                chase = true;
+                            }
+                        }
+                        else
+                        {
+                            chase = false;
+                            idle = 0;
+                            target.Set(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                    }
+                }
+               
                 dir.Set(target.x - transform.position.x, target.y - transform.position.y);
                 body.velocity = dir.normalized * slowSpeed;
             }
@@ -105,10 +156,6 @@ public class AI : MonoBehaviour {
                 PlayerManager.Instance.m_moneyAmount += 100;
                 var clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
                 clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg + "\n" + "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp" + "\n" + "+" + 100 + "coins";
-                //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
-                //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + (10 * 1.5f * PlayerManager.Instance.m_currentLevel) + "exp";
-                //clone = (GameObject)Instantiate(damageCounter, transform.position, transform.rotation);
-                //clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "+" + 100 + "coins";
             }
         }
 	}
@@ -121,9 +168,15 @@ public class AI : MonoBehaviour {
                 if (!PlayerManager.Instance.invulnerable)
                 {
                     other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                    var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+                    clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "-" + AttackDmg;
                     cooldownTimer = cooldownTime;
                 }
 
+            }
+            if (other.gameObject.tag == "Enemy" && !chase)
+            {
+                Physics2D.IgnoreCollision(other.collider, GetComponent<Collider2D>());
             }
         }
     }
@@ -136,6 +189,8 @@ public class AI : MonoBehaviour {
                 if (!PlayerManager.Instance.invulnerable)
                 {
                     other.gameObject.GetComponent<PlayerManager>().MinusHP(AttackDmg);
+                    var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
+                    clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "-" + AttackDmg;
                     cooldownTimer = cooldownTime;
                 }
 
