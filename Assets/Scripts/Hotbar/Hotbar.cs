@@ -96,7 +96,6 @@ public class Hotbar : MonoBehaviour {
         transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
         HotbarParent.Instance.SetCurrSlotID(0);
 
-
         // Second slot (Slow Arrow)
         transform.GetChild(1).GetComponent<HotbarSlot>().AddItem(m_database.m_itemsList[(int)ItemDatabase.TheItem.Slow_Arrow]);
         transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
@@ -144,5 +143,51 @@ public class Hotbar : MonoBehaviour {
         transform.GetChild(8).GetChild(0).gameObject.SetActive(true);
         // Set selection
         transform.GetChild(8).GetChild(0).gameObject.SetActive(false);
+    }
+
+    // Use the equipment
+    public void UseHotbarItem(int _hotbarID)
+    {
+        // Set the item as hotbar item
+        ShopItem theItem = (ShopItem)transform.GetChild(_hotbarID).GetComponent<HotbarSlot>().m_hotbarItem;
+        // Check what item type it is
+        switch(theItem.m_itemType)
+        {
+            case Item.ItemType.Consumables:
+                // Remove one of item from inventory
+                Inventory.Instance.Remove(theItem.m_itemName, 1);
+                switch (theItem.m_itemID)
+                {
+                    // If it is health potion
+                    case 5:
+                        // Give player 10 health
+                        PlayerManager.Instance.AddHP(10);
+                        break;
+                    case 6:
+                        // Give player 30 health
+                        PlayerManager.Instance.AddHP(30);
+                        break;
+                    case 7:
+                        // Give player 50 health
+                        PlayerManager.Instance.AddHP(50);
+                        break;
+                    // If it is mana potion
+                    case 8:
+                        // Give player 10 mana
+                        PlayerManager.Instance.AddMana(10);
+                        break;
+                    case 9:
+                        // Give player 30 mana
+                        PlayerManager.Instance.AddMana(30);
+                        break;
+                    case 10:
+                        // Give player 50 mana
+                        PlayerManager.Instance.AddMana(50);
+                        break;
+                }
+                break;
+            case Item.ItemType.Arrow:
+                break;
+        }
     }
 }

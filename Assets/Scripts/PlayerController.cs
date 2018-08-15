@@ -693,6 +693,17 @@ public class PlayerController : MonoBehaviour {
                 HotbarParent.Instance.SetMenuActive(true);
                 menuOpen = false;
             }
+
+            // Check if menu is open
+            if(!menuOpen)
+            {
+                // Check if player used left shift
+                if(Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    // Use the item
+                    Hotbar.Instance.UseHotbarItem(HotbarParent.Instance.GetCurrentSlotID());
+                }
+            }
         }
         
     }

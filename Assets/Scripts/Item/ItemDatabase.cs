@@ -31,12 +31,12 @@ public class ItemDatabase : MonoBehaviour {
 		m_itemsList.Add(new ShopItem("Arrow", 2, "A normal arrow that can be used to kill enemies", Item.ItemType.Arrow, true, 20));
         m_itemsList.Add(new ShopItem("Slow Arrow", 3, "An arrow that can slow down your enemies", Item.ItemType.Arrow, true, 20));
         m_itemsList.Add(new ShopItem("Homing Arrow", 4, "An arrow that follows your enemies", Item.ItemType.Arrow, true, 20));
-        m_itemsList.Add(new ShopItem("Small Health Pot", 5, "Adds 10 Health", Item.ItemType.Arrow, true, 20));
-        m_itemsList.Add(new ShopItem("Medium Health Pot", 6, "Adds 30 Health", Item.ItemType.Arrow, true, 30));
-        m_itemsList.Add(new ShopItem("Large Health Pot", 7, "Adds 50 Health", Item.ItemType.Arrow, true, 40));
-        m_itemsList.Add(new ShopItem("Small Mana Pot", 8, "Adds 10 Mana", Item.ItemType.Arrow, true, 20));
-        m_itemsList.Add(new ShopItem("Medium Mana Pot", 9, "Adds 30 Mana", Item.ItemType.Arrow, true, 30));
-        m_itemsList.Add(new ShopItem("Large Mana Pot", 10, "Adds 50 Mana", Item.ItemType.Arrow, true, 40));
+        m_itemsList.Add(new ShopItem("Small Health Pot", 5, "Adds 10 Health", Item.ItemType.Consumables, true, 20));
+        m_itemsList.Add(new ShopItem("Medium Health Pot", 6, "Adds 30 Health", Item.ItemType.Consumables, true, 30));
+        m_itemsList.Add(new ShopItem("Large Health Pot", 7, "Adds 50 Health", Item.ItemType.Consumables, true, 40));
+        m_itemsList.Add(new ShopItem("Small Mana Pot", 8, "Adds 10 Mana", Item.ItemType.Consumables, true, 20));
+        m_itemsList.Add(new ShopItem("Medium Mana Pot", 9, "Adds 30 Mana", Item.ItemType.Consumables, true, 30));
+        m_itemsList.Add(new ShopItem("Large Mana Pot", 10, "Adds 50 Mana", Item.ItemType.Consumables, true, 40));
 
     }
 

@@ -262,6 +262,11 @@ public class PlayerManager : MonoBehaviour
         m_currentHealth -= value;
     }
 
+    public void AddMana(int value)
+    {
+        m_currentMana += value;
+    }
+
     // Set Player Bonuses based on Player's Runes
     // 0 is sword, 1 is bow, 2 is armour
     public void SetBonuses(int _runeType)
