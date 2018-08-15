@@ -43,11 +43,11 @@ public class PlayerManager : MonoBehaviour
 
     public List<int> skills;
     // Player Sword Damage Bonus
-    private int m_swordBonus;
+    public int m_swordBonus;
     // Player Bow Damage Bonus
-    private int m_bowBonus;
+    public int m_bowBonus;
     // Player Health Bonus
-    private int m_healthBonus;
+    public int m_healthBonus;
 
     // Text that shows Armour Bonus
     private Text m_armourBonusText;
@@ -184,6 +184,13 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int kik = 0;
+        if (kik == 0)
+        {
+            m_maxHealth += m_healthBonus;
+            m_currentHealth = m_maxHealth;
+            kik++;
+        }
         timer += Time.deltaTime;
         if (m_currentHealth < 0)
         {

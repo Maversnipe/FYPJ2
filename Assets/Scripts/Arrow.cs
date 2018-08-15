@@ -18,7 +18,7 @@ public class Arrow : MonoBehaviour {
         FlightTime = 10.5f;
         FlightTimer = 0f;
         moveSpeed = 10f;
-        Damage = PlayerManager.Instance.m_dmg;
+        Damage = PlayerManager.Instance.m_dmg + PlayerManager.Instance.m_bowBonus;
         body = GetComponent<Rigidbody2D>();
         if(!skill1 || PlayerManager.Instance.arrowType != 3)
         {

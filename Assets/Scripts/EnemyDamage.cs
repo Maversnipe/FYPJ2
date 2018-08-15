@@ -20,9 +20,9 @@ public class EnemyDamage : MonoBehaviour {
     {
         if (other.gameObject.tag == "Enemy" && transform.parent.parent.gameObject.GetComponent<PlayerController>().isAttacking)
         {
-            other.gameObject.GetComponent<AI>().MinusHP(PlayerManager.Instance.m_dmg);
+            other.gameObject.GetComponent<AI>().MinusHP(PlayerManager.Instance.m_dmg + PlayerManager.Instance.m_swordBonus);
             var clone = (GameObject)Instantiate(damageCounter, other.transform.position, other.transform.rotation);
-            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + PlayerManager.Instance.m_dmg;
+            clone.GetComponentInChildren<DamageNumbers>().dmgText.text = "" + (PlayerManager.Instance.m_dmg + PlayerManager.Instance.m_swordBonus);
         }
     }
 }
