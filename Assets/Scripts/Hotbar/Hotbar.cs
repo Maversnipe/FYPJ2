@@ -37,7 +37,7 @@ public class Hotbar : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// If player presses the left arrow
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             // If the selected slot is not the first slot on the left 
             if(HotbarParent.Instance.GetCurrentSlotID() > 0)
@@ -60,7 +60,7 @@ public class Hotbar : MonoBehaviour {
             }
         }
         // If player clicks right arrow
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) ||  Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             // If the selected slot is not the first slot on the left 
             if (HotbarParent.Instance.GetCurrentSlotID() < 8)
@@ -82,6 +82,8 @@ public class Hotbar : MonoBehaviour {
                 transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
             }
         }
+
+
 
     }
 
